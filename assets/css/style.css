@@ -55,7 +55,7 @@ h1, h2, h3, h4 {
 
 em, .accent-italic {
   font-family: "Space Grotesk", sans-serif;
-  font-style: italic;
+  font-style: normal;
   font-weight: 500;
   color: var(--accent);
 }
@@ -223,7 +223,7 @@ img, svg { display: block; max-width: 100%; }
 
 .brand-mark { width: 30px; height: 30px; }
 
-.brand span { color: var(--accent); font-style: italic; }
+.brand span { color: var(--accent); margin-left: -10px; } /* flex gap would split the wordmark */
 
 .nav-links {
   display: flex;
@@ -643,7 +643,7 @@ img, svg { display: block; max-width: 100%; }
   top: 16px;
   left: 20px;
   font-family: "Space Grotesk", sans-serif;
-  font-style: italic;
+  font-style: normal;
   font-weight: 500;
   font-size: 1.8rem;
   opacity: 0.4;
@@ -731,7 +731,7 @@ img, svg { display: block; max-width: 100%; }
 .about-visual blockquote {
   font-family: "Space Grotesk", sans-serif;
   font-size: 1.5rem;
-  font-style: italic;
+  font-style: normal;
   color: var(--ink);
   margin-bottom: 24px;
 }
@@ -789,7 +789,7 @@ img, svg { display: block; max-width: 100%; }
 
 .principle-num {
   font-family: "Space Grotesk", sans-serif;
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-size: 1.6rem;
   margin-bottom: 18px;
@@ -922,7 +922,7 @@ img, svg { display: block; max-width: 100%; }
 
 .module-num {
   font-family: "Space Grotesk", sans-serif;
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-size: 1.6rem;
   flex-shrink: 0;

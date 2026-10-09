@@ -45,73 +45,29 @@
       '<div class="app-body">' + renderBlocks(ch.body) + '</div>';
   }
 
-  function renderWeeklyLedger(container, store) {
-    let rows = store.getTool("ledger", []);
-    if (!rows.length) rows = [
-      { category: "Essentials", planned: "", actual: "" },
-      { category: "Flexible", planned: "", actual: "" },
-      { category: "Future", planned: "", actual: "" }
-    ];
-
-    container.innerHTML =
-      '<div class="app-eyebrow">Tool</div>' +
-      '<h1 class="app-title">Weekly Ledger</h1>' +
-      '<p class="app-dek">Plan each category, then log what actually happened. Updates automatically.</p>' +
-      '<div class="app-rule"></div>' +
-      '<div class="tool-card">' +
-      '<table class="tool-table"><thead><tr><th>Category</th><th>Planned</th><th>Actual</th><th></th></tr></thead>' +
-      '<tbody id="wl-rows"></tbody></table>' +
-      '<button class="btn btn-ghost btn-sm" id="wl-add">+ Add category</button>' +
-      '<div class="tool-summary" id="wl-total"></div>' +
-      '</div>';
-
-    const tbody = document.getElementById("wl-rows");
-
-    function renderRows() {
-      tbody.innerHTML = rows.map((r, i) =>
-        '<tr>' +
-        '<td><input type="text" class="wl-cat" data-i="' + i + '" value="' + r.category + '" placeholder="e.g. Groceries"></td>' +
-        '<td class="amount-col"><input type="number" class="wl-planned" data-i="' + i + '" value="' + r.planned + '" placeholder="0.00"></td>' +
-        '<td class="amount-col"><input type="number" class="wl-actual" data-i="' + i + '" value="' + r.actual + '" placeholder="0.00"></td>' +
-        '<td><button class="tool-remove-btn" data-i="' + i + '">&times;</button></td>' +
-        '</tr>'
-      ).join("");
-      tbody.querySelectorAll(".wl-cat").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].category = el.value; persist(); }));
-      tbody.querySelectorAll(".wl-planned").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].planned = el.value; persist(); recalc(); }));
-      tbody.querySelectorAll(".wl-actual").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].actual = el.value; persist(); recalc(); }));
-      tbody.querySelectorAll(".tool-remove-btn").forEach((el) => el.addEventListener("click", () => {
-        rows.splice(+el.dataset.i, 1);
-        if (!rows.length) rows.push({ category: "", planned: "", actual: "" });
-        persist(); renderRows(); recalc();
-      }));
-    }
-
-    function recalc() {
-      const totalPlanned = rows.reduce((s, r) => s + (parseFloat(r.planned) || 0), 0);
-      const totalActual = rows.reduce((s, r) => s + (parseFloat(r.actual) || 0), 0);
-      const diff = totalPlanned - totalActual;
-      const el = document.getElementById("wl-total");
-      el.className = "tool-summary " + (diff >= 0 ? "balanced" : "unbalanced");
-      el.innerHTML =
-        "<span>" + formatCurrency(totalPlanned) + " planned vs " + formatCurrency(totalActual) + " actual</span>" +
-        "<span>" + (diff >= 0 ? formatCurrency(diff) + " under plan" : formatCurrency(Math.abs(diff)) + " over plan") + "</span>";
-    }
-
-    function persist() { store.setTool("ledger", rows); }
-
-    document.getElementById("wl-add").addEventListener("click", () => {
-      rows.push({ category: "", planned: "", actual: "" });
-      persist(); renderRows(); recalc();
-    });
-
-    renderRows();
-    recalc();
-  }
+  const TOOL = {
+      storeKey: "ledger",
+      title: "Side Hustle Ledger",
+      dek: "Log this month's income and costs per source. Set your tax set-aside percentage to see what you can safely keep.",
+      addLabel: "+ Add source",
+      fields: [{ key: "tax", label: "Tax set-aside (%)", value: 25 }],
+      defaults: [{ source: "Main side hustle" }],
+      columns: [
+        { key: "source", label: "Income source", type: "text", placeholder: "e.g. Etsy shop" },
+        { key: "income", label: "Income", type: "number", placeholder: "0.00" },
+        { key: "costs", label: "Costs", type: "number", placeholder: "0.00" }
+      ],
+      summary(rows, f) {
+        const profit = rows.reduce((s, r) => s + num(r.income) - num(r.costs), 0);
+        const setAside = Math.max(profit, 0) * num(f.tax) / 100;
+        return { className: profit >= 0 ? "balanced" : "unbalanced", html: "<span>" + formatCurrency(profit) + " profit · " + formatCurrency(setAside) + " set aside</span><span>" + formatCurrency(profit - setAside) + " to keep</span>" };
+      }
+    };
 
   const ROADMAP_ITEMS = buildRoadmapItems(CHAPTERS);
 
   const sections = CHAPTERS.map((ch) => ({ id: ch.id, group: "content", label: ch.label, render: (c) => renderContentSection(c, ch) }));
-  sections.push({ id: "tool-ledger", group: "tools", label: "Weekly Ledger", render: renderWeeklyLedger });
+  sections.push({ id: "tool-ledger", group: "tools", label: "Side Hustle Ledger", render: (c, store) => renderTableTool(c, store, TOOL) });
   if (CHAPTERS.length) sections.push({ id: "tool-roadmap", group: "tools", label: "Action Roadmap", render: (c, store) => renderRoadmap(c, store, ROADMAP_ITEMS) });
 
   initAppShell({ productId: "side-hustle-ledger", sections: sections, locked: !CHAPTERS.length });

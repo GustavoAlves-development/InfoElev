@@ -1,5 +1,5 @@
 scripts/
 docs/
-admin/
+/admin/
 .claude/
 .env*

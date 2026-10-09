@@ -1,73 +1,73 @@
 // Course chapters for digital-product-academy. Served only to members with full access (see middleware.js).
 window.ELEV_CHAPTERS = [
   {
-    id: "ch1", label: "1. What Investing Actually Is", module: "Module 1",
-    heading: "What Investing Actually Is", dek: "The core idea, without the jargon.",
+    id: "ch1", label: "1. Why Digital Products", module: "Module 1",
+    heading: "Why Digital Products", dek: "What makes a digital product different from trading hours for money.",
     body: [
-      { type: "p", text: "Investing means putting money into something today with the expectation that it will be worth more later, in exchange for taking on some risk that it won't be. That's the entire concept underneath every product and acronym in this space." },
-      { type: "h", text: "Why people invest instead of just saving" },
+      { type: "p", text: "A service pays you once for each hour you work. A digital product — a guide, template, checklist, or short course — is built once and can be delivered many times. That doesn't make it passive or easy, but it does change the math of your time." },
+      { type: "h", text: "What a good first product looks like" },
       { type: "list", items: [
-        "Cash sitting still tends to lose purchasing power to inflation over time.",
-        "Investing gives your money a chance to grow faster than a standard savings account.",
-        "The tradeoff is that value can go down as well as up, especially in the short term."
+        "It solves one specific problem for one specific person.",
+        "It can be finished in a weekend or two, not a season.",
+        "It's built on something you already know, have done, or have documented."
       ] },
-      { type: "action", text: "Write one sentence, in your own words, explaining why you personally want to start investing." }
+      { type: "action", text: "List five problems you've solved for yourself or others that someone else might pay to solve faster." }
     ]
   },
   {
-    id: "ch2", label: "2. Risk, Return, and Time Horizon", module: "Module 2",
-    heading: "Risk, Return, and Time Horizon", dek: "Why risk isn't something to avoid entirely.",
+    id: "ch2", label: "2. Validating Before You Build", module: "Module 2",
+    heading: "Validating Before You Build", dek: "Making sure someone wants it before you spend weeks making it.",
     body: [
-      { type: "p", text: "Risk and potential return are linked — you generally can't reduce one without reducing the other. The right amount of risk depends heavily on when you'll actually need the money." },
-      { type: "h", text: "How time horizon changes the picture" },
+      { type: "p", text: "The most expensive mistake in digital products is building something nobody asked for. Validation means collecting real signals of interest — questions, waitlist sign-ups, or pre-orders — before the product exists." },
+      { type: "h", text: "Cheap ways to test demand" },
       { type: "list", items: [
-        "Money you need within a year or two generally shouldn't carry much investment risk at all.",
-        "Money you won't touch for a decade or more has time to recover from downturns.",
-        "Your comfort with seeing the value drop temporarily matters as much as the math."
+        "Search for existing products on the same topic. Competition is a sign of demand, not a reason to quit.",
+        "Post a short outline in a relevant community and see which parts get questions.",
+        "Offer a discounted pre-sale to a small group and deliver only if enough people buy."
       ] },
-      { type: "action", text: "Write down your top financial goal, its rough time horizon, and whether that money should carry high, medium, or low risk." }
+      { type: "action", text: "Pick your strongest idea and run one validation test this week. Write down what counts as \"enough interest\" before you start." }
     ]
   },
   {
-    id: "ch3", label: "3. Account Types Explained", module: "Module 3",
-    heading: "Account Types Explained", dek: "Brokerage vs. retirement accounts, and why it matters.",
+    id: "ch3", label: "3. Building Version One", module: "Module 3",
+    heading: "Building Version One", dek: "Formats, tools, and a scope you can finish.",
     body: [
-      { type: "p", text: "The account you use can matter as much as what you invest in, mainly because of the tax treatment attached to it. This module explains the differences in plain terms, not which specific account to open." },
-      { type: "h", text: "The broad categories" },
+      { type: "p", text: "Version one should be the smallest complete thing that delivers the promised result. You can expand later with buyer feedback; you can't get feedback on something that never ships." },
+      { type: "h", text: "Choosing a format" },
       { type: "list", items: [
-        "Taxable brokerage accounts: flexible, no withdrawal restrictions, but no special tax treatment.",
-        "Tax-advantaged retirement accounts: tax benefits in exchange for restrictions on withdrawing before retirement age.",
-        "Employer-sponsored plans: may include a company match, worth understanding before anything else."
+        "Templates and checklists: fastest to build, easy to understand at a glance.",
+        "Written guides: great for step-by-step processes and how-to topics.",
+        "Short video lessons: best when seeing it done matters more than reading about it."
       ] },
-      { type: "action", text: "Find out whether your employer offers any kind of matching contribution, and write down the details if so." }
+      { type: "action", text: "Write the table of contents for version one, then cut anything that isn't required to deliver the core result." }
     ]
   },
   {
-    id: "ch4", label: "4. Building a Starter Portfolio", module: "Module 4",
-    heading: "Building a Starter Portfolio", dek: "A guided exercise, not a stock pick.",
+    id: "ch4", label: "4. Pricing and Packaging", module: "Module 4",
+    heading: "Pricing and Packaging", dek: "Setting a price, and when a second tier makes sense.",
     body: [
-      { type: "p", text: "A starter portfolio doesn't need to be complicated. Broad diversification — owning small pieces of many companies rather than betting on a few — is the foundation most long-term approaches are built on." },
-      { type: "h", text: "What to think through" },
+      { type: "p", text: "Price is a signal of value, not just a number. Look at what comparable products charge, think about the result your buyer gets, and remember to account for platform and payment fees. The Product Revenue Planner helps you see what different prices and sales volumes add up to." },
+      { type: "h", text: "Packaging options" },
       { type: "list", items: [
-        "How much of your portfolio should be in stocks versus more stable assets, given your time horizon.",
-        "Whether you want built-in diversification through a fund, versus assembling it yourself.",
-        "How often you'll actually rebalance, and putting that on a calendar now."
+        "A single version at one clear price — simplest, and often best for a first product.",
+        "Two tiers: a core version and a version with extras like templates or support.",
+        "A bundle: several small products sold together at a lower combined price."
       ] },
-      { type: "action", text: "Use the Starter Portfolio Worksheet to sketch a simple target allocation across a few broad categories." }
+      { type: "action", text: "Enter two or three price scenarios in the Product Revenue Planner and choose the one you'd be comfortable defending to a buyer." }
     ]
   },
   {
-    id: "ch5", label: "5. Staying the Course", module: "Module 5",
-    heading: "Staying the Course", dek: "Handling market swings without panic-selling.",
+    id: "ch5", label: "5. Launching and Selling", module: "Module 5",
+    heading: "Launching and Selling", dek: "A simple launch plan for your first product.",
     body: [
-      { type: "p", text: "Markets move up and down regularly; that's not a malfunction, it's how they work. Investors who do best over time are usually the ones who stuck to a plan rather than reacting to every swing." },
-      { type: "h", text: "What tends to help" },
+      { type: "p", text: "A launch is just a focused window of attention. You don't need a big audience; you need a clear message, a sales page that answers the obvious questions, and a short list of places to share it." },
+      { type: "h", text: "A seven-day launch outline" },
       { type: "list", items: [
-        "Checking your portfolio on a set schedule, not every time the market moves.",
-        "Revisiting your original time horizon before making any change.",
-        "Remembering that a loss on paper isn't a real loss until you actually sell."
+        "Days 1–2: share the problem and why you built the solution.",
+        "Days 3–5: show what's inside, with a sample or preview.",
+        "Days 6–7: answer common questions and remind people the launch price ends soon."
       ] },
-      { type: "action", text: "Decide now, in advance, how often you'll actually check your investments — and write that number down." }
+      { type: "action", text: "Write your sales page headline, three bullet points on what's inside, and your answer to \"who is this not for?\"" }
     ]
   }
 ];

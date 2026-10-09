@@ -1,73 +1,75 @@
 // Course chapters for freelance-starter-kit. Served only to members with full access (see middleware.js).
 window.ELEV_CHAPTERS = [
   {
-    id: "ch1", label: "1. How Much Is Enough", module: "Module 1",
-    heading: "How Much Is Enough", dek: "Calculating a target that reflects your real expenses.",
+    id: "ch1", label: "1. Defining Your Service", module: "Module 1",
+    heading: "Defining Your Service", dek: "From \"I can do a lot of things\" to one clear service.",
     body: [
-      { type: "p", text: "The generic \"three to six months\" rule is a starting point, not a rule that fits everyone. Your real number depends on your monthly essential expenses and how stable your income actually is." },
-      { type: "h", text: "What shifts your target higher" },
+      { type: "p", text: "Clients hire specialists for specific problems. \"I do design\" is hard to buy; \"I design social media templates for local restaurants\" is easy to say yes to. Narrowing down doesn't limit you forever — it just makes your first clients easier to find." },
+      { type: "h", text: "Narrow it down" },
       { type: "list", items: [
-        "Variable or freelance income instead of a steady paycheck.",
-        "Being the sole income earner in your household.",
-        "A specialized job that could take longer to replace."
+        "Pick one skill you can deliver well today.",
+        "Pick one type of client who needs it and can pay for it.",
+        "Describe the outcome they get, not just the task you do."
       ] },
-      { type: "action", text: "List your true monthly essential expenses — the ones that don't stop in an emergency — in the Target Number Calculator." }
+      { type: "action", text: "Write your service in one sentence: \"I help [client] with [outcome] by [service].\"" }
     ]
   },
   {
-    id: "ch2", label: "2. Where to Keep Your Fund", module: "Module 2",
-    heading: "Where to Keep Your Fund", dek: "Weighing access, safety, and growth.",
+    id: "ch2", label: "2. Setting Your Rate", module: "Module 2",
+    heading: "Setting Your Rate", dek: "Working backwards from what you need to earn.",
     body: [
-      { type: "p", text: "An emergency fund has one job: to be there when you need it. That makes accessibility and safety more important than growth for this specific money." },
-      { type: "h", text: "What to weigh" },
+      { type: "p", text: "Many new freelancers pick a rate by guessing what clients will accept. A better approach starts with your own numbers: what you want to earn, what your business costs, and how many hours you can realistically bill. The Freelance Rate Calculator does this math for you." },
+      { type: "h", text: "Remember the hidden costs" },
       { type: "list", items: [
-        "How quickly you can access the money without penalty.",
-        "Whether the balance is protected from loss.",
-        "Whether it earns any return while it waits, without adding real risk."
+        "Not every working hour is billable — admin, outreach, and revisions take time too.",
+        "Software, equipment, and platform fees come out of your income.",
+        "As a freelancer, setting money aside for taxes is your responsibility."
       ] },
-      { type: "action", text: "Write down where your fund currently lives, and whether it meets these three criteria." }
+      { type: "action", text: "Fill in the Freelance Rate Calculator with your real numbers and note the minimum hourly rate it suggests." }
     ]
   },
   {
-    id: "ch3", label: "3. Building It on Autopilot", module: "Module 3",
-    heading: "Building It on Autopilot", dek: "Growing your fund without relying on willpower.",
+    id: "ch3", label: "3. Writing Proposals That Win", module: "Module 3",
+    heading: "Writing Proposals That Win", dek: "A proposal structure clients actually read.",
     body: [
-      { type: "p", text: "A fund built through occasional \"whatever's left over\" transfers grows unpredictably. One set automatic transfer, timed right after payday, removes the decision entirely." },
-      { type: "h", text: "Setting it up" },
+      { type: "p", text: "A good proposal is short, specific, and about the client. It shows you understood their problem, explains how you'll solve it, and makes the next step obvious." },
+      { type: "h", text: "The five-part proposal" },
       { type: "list", items: [
-        "Pick a fixed amount, even a small one, rather than waiting until you feel like you can afford more.",
-        "Time the transfer for right after you're paid, before the money has a chance to be spent elsewhere.",
-        "Revisit the amount every few months as your budget changes."
+        "Their situation, in their words.",
+        "The result you'll deliver and how you'll measure it.",
+        "Scope: what's included, and what isn't.",
+        "Timeline and price.",
+        "A single clear next step."
       ] },
-      { type: "action", text: "Set up one automatic transfer this week, even if it's a small starting amount." }
+      { type: "action", text: "Draft a proposal template using these five parts, leaving brackets for the details you'll customize per client." }
     ]
   },
   {
-    id: "ch4", label: "4. Handling Setbacks Without Guilt", module: "Module 4",
-    heading: "Handling Setbacks Without Guilt", dek: "What to do when you have to dip into the fund.",
+    id: "ch4", label: "4. Finding Your First Clients", module: "Module 4",
+    heading: "Finding Your First Clients", dek: "Where first clients usually come from.",
     body: [
-      { type: "p", text: "Using the fund for a genuine emergency means it did its job. The mistake isn't spending it — it's not having a plan to rebuild it." },
-      { type: "h", text: "A simple rebuild plan" },
+      { type: "p", text: "Your first clients tend to come from people who already know or trust you, followed by platforms where clients actively post work. Cold outreach works too, but it's most effective when it's specific and personal." },
+      { type: "h", text: "Start in this order" },
       { type: "list", items: [
-        "Resume your automatic transfer immediately, even at a smaller amount if needed.",
-        "Avoid the urge to \"catch up\" all at once with money you don't have.",
-        "Treat the rebuild the same way you built it the first time — steady, not rushed."
+        "Former colleagues, friends, and local businesses you already know.",
+        "Freelance platforms where clients post projects in your category.",
+        "A short list of ideal clients you contact directly with a tailored message."
       ] },
-      { type: "action", text: "Decide, in advance, what your rebuild transfer amount will be if you ever need to dip into the fund." }
+      { type: "action", text: "Make a list of 15 people or businesses who might need your service, and contact five of them this week." }
     ]
   },
   {
-    id: "ch5", label: "5. Graduating to Your Next Goal", module: "Module 5",
-    heading: "Graduating to Your Next Goal", dek: "What to build toward once your fund is fully funded.",
+    id: "ch5", label: "5. Contracts and Getting Paid", module: "Module 5",
+    heading: "Contracts and Getting Paid", dek: "Protecting your time and your income.",
     body: [
-      { type: "p", text: "Once your target number is reached, the automatic transfer you built doesn't have to stop — it just needs a new destination." },
-      { type: "h", text: "Where that money can go next" },
+      { type: "p", text: "Clear agreements prevent most freelance headaches. Even a simple written agreement covering scope, deadlines, revisions, and payment terms sets expectations for both sides." },
+      { type: "h", text: "Habits that protect you" },
       { type: "list", items: [
-        "A specific short-term goal, like a large planned purchase.",
-        "Additional debt payoff, if any remains.",
-        "Longer-term investing, once your short-term safety net is solid."
+        "Put scope and price in writing before any work starts.",
+        "Ask for a deposit on larger projects.",
+        "Send invoices promptly, with a due date and payment instructions."
       ] },
-      { type: "action", text: "Decide right now where your automatic transfer will redirect to once your Freedom Fund target is reached." }
+      { type: "action", text: "Write down your standard payment terms — deposit, due date, and number of revisions included — and use them on your next project." }
     ]
   }
 ];

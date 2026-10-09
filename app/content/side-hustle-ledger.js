@@ -1,73 +1,74 @@
 // Course chapters for side-hustle-ledger. Served only to members with full access (see middleware.js).
 window.ELEV_CHAPTERS = [
   {
-    id: "ch1", label: "1. Why Most Budgets Fail", module: "Module 1",
-    heading: "Why Most Budgets Fail", dek: "The real reasons budgeting tools get abandoned.",
+    id: "ch1", label: "1. Why Track Your Side Hustle", module: "Module 1",
+    heading: "Why Track Your Side Hustle", dek: "Revenue isn't profit — and guessing gets expensive.",
     body: [
-      { type: "p", text: "Most budgets don't fail because of bad math — they fail because they demand daily attention most people can't sustain. The system has to survive a busy week, not just a calm one." },
-      { type: "h", text: "The usual failure points" },
+      { type: "p", text: "Many side hustles feel profitable until the numbers are added up. Fees, supplies, software, and taxes quietly eat into what comes in. A simple ledger shows what you actually keep and which activities are worth your time." },
+      { type: "h", text: "What a ledger answers" },
       { type: "list", items: [
-        "Too many categories to log accurately every day.",
-        "No fixed time set aside to actually review it.",
-        "A single overspend feels like \"failure,\" so the whole thing gets abandoned."
+        "How much did I really earn this month after costs?",
+        "Which income source is most worth my time?",
+        "How much should I set aside for taxes?"
       ] },
-      { type: "action", text: "Write down the last budgeting method you tried and the specific point where you stopped using it." }
+      { type: "action", text: "Write down every way you currently earn extra money, even small or irregular amounts." }
     ]
   },
   {
-    id: "ch2", label: "2. Building Your Ledger", module: "Module 2",
-    heading: "Building Your Ledger", dek: "Setting up your ledger in one sitting, with real numbers.",
+    id: "ch2", label: "2. Separating Business and Personal", module: "Module 2",
+    heading: "Separating Business and Personal", dek: "The simplest habit that makes tracking easy.",
     body: [
-      { type: "p", text: "A ledger works best when it's built from your actual bank statements, not a guess. Pull up the last month of transactions before you fill anything in." },
-      { type: "h", text: "What goes in first" },
+      { type: "p", text: "When side-hustle money mixes with personal spending, tracking becomes a guessing game. Keeping them apart — even with just a separate account or card — makes everything else in this system simpler." },
+      { type: "h", text: "Simple separation steps" },
       { type: "list", items: [
-        "Your total income for the month, after taxes.",
-        "Every fixed bill, in one column.",
-        "A single \"everything else\" total to start — you'll split it in the next chapter."
+        "Use one account or card for side-hustle income and expenses only.",
+        "Pay yourself by transferring to your personal account on a set schedule.",
+        "Save receipts for business purchases in one folder."
       ] },
-      { type: "action", text: "Open the Weekly Ledger tool and enter this month's income and fixed bills as your starting point." }
+      { type: "action", text: "Choose the account you'll use only for your side hustle, and create a folder for receipts today." }
     ]
   },
   {
-    id: "ch3", label: "3. Categorizing Without Overcomplicating", module: "Module 3",
-    heading: "Categorizing Without Overcomplicating", dek: "A short list of categories that covers almost everything.",
+    id: "ch3", label: "3. Categories That Make Sense", module: "Module 3",
+    heading: "Categories That Make Sense", dek: "A short category list you'll actually keep using.",
     body: [
-      { type: "p", text: "More categories feel more precise, but they're also more work to maintain. A shorter list you'll actually keep using beats a detailed one you abandon in week two." },
-      { type: "h", text: "A category list that covers most spending" },
+      { type: "p", text: "Too many categories make tracking a chore; too few make it useless. Start with a handful and only add more if a category gets too big to understand." },
+      { type: "h", text: "A starter category list" },
       { type: "list", items: [
-        "Essentials: housing, utilities, groceries, transport.",
-        "Flexible: dining out, entertainment, shopping.",
-        "Future: savings, debt payoff, investing."
+        "Income: by source or platform.",
+        "Direct costs: supplies, materials, platform fees.",
+        "Tools: software, subscriptions, equipment.",
+        "Marketing: ads, promotion, listings."
       ] },
-      { type: "action", text: "Sort last month's \"everything else\" total into these three groups in the Weekly Ledger tool." }
+      { type: "action", text: "Set up your income sources in the Side Hustle Ledger tool and enter last month's numbers as best you can." }
     ]
   },
   {
-    id: "ch4", label: "4. The Weekly 10-Minute Check-In", module: "Module 4",
-    heading: "The Weekly 10-Minute Check-In", dek: "The ritual that makes the ledger actually stick.",
+    id: "ch4", label: "4. Planning for Taxes", module: "Module 4",
+    heading: "Planning for Taxes", dek: "Avoiding the surprise bill at the end of the year.",
     body: [
-      { type: "p", text: "A once-a-month review is too infrequent to catch problems early. A short weekly check-in, done the same day every week, is what keeps the ledger accurate." },
-      { type: "h", text: "What the check-in covers" },
+      { type: "p", text: "Side-hustle income is usually taxable, and often nobody withholds tax for you. Setting aside a percentage of your profit each month avoids a painful surprise. The right percentage depends on where you live and your situation — a local tax professional can help you choose it." },
+      { type: "h", text: "A simple set-aside habit" },
       { type: "list", items: [
-        "Update actual spending against your planned amounts.",
-        "Note anything unusual before you forget why it happened.",
-        "Adjust next week's plan if something's clearly off track."
+        "Pick a set-aside percentage based on professional advice for your situation.",
+        "Move that percentage of profit to a separate savings account every month.",
+        "Keep your ledger and receipts organized for tax season."
       ] },
-      { type: "action", text: "Put a recurring 10-minute reminder on your calendar, same day and time every week, labeled \"Ledger check-in.\"" }
+      { type: "action", text: "Enter your set-aside percentage in the Side Hustle Ledger and schedule a monthly transfer for that amount." }
     ]
   },
   {
-    id: "ch5", label: "5. Adjusting When Life Happens", module: "Module 5",
-    heading: "Adjusting When Life Happens", dek: "What to do when an unexpected expense throws off your plan.",
+    id: "ch5", label: "5. The Monthly Review", module: "Module 5",
+    heading: "The Monthly Review", dek: "Fifteen minutes a month that keeps your side hustle healthy.",
     body: [
-      { type: "p", text: "An overspent category isn't a sign the system is broken — it's information. The goal is to adjust the plan, not abandon the habit." },
-      { type: "h", text: "A simple way to reset" },
+      { type: "p", text: "A ledger is only useful if you look at it. A short monthly review turns numbers into decisions: what to keep doing, what to cut, and where to focus next." },
+      { type: "h", text: "Review questions" },
       { type: "list", items: [
-        "Identify which category absorbed the unexpected cost.",
-        "Rebalance next week's plan to cover the gap, rather than ignoring it.",
-        "If it's a true one-time event, note it separately instead of treating it as your new normal."
+        "Was this month's profit higher or lower than last month, and why?",
+        "Which expense could be reduced or removed?",
+        "Which income source gave the best return for the time spent?"
       ] },
-      { type: "action", text: "Think of the last unexpected expense you had, and decide right now which category would have absorbed it in your ledger." }
+      { type: "action", text: "Put a recurring 15-minute \"Ledger Review\" on your calendar for the first day of each month." }
     ]
   }
 ];

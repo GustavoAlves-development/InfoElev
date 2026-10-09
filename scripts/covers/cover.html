@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Space Grotesk:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root { --ink: #111816; --surface-deep: #e2ebe6; --accent: #0f8a5f; --accent-light: #22b07d; --accent-pale: #c9ecdc; }
   * { margin: 0; box-sizing: border-box; }
@@ -13,9 +13,10 @@
   .dark { background: linear-gradient(155deg, var(--ink) 0%, #16261f 100%); color: var(--accent-light); }
   .light { background: linear-gradient(155deg, var(--accent-pale) 0%, var(--surface-deep) 100%); color: var(--ink); }
   .top { display: flex; justify-content: space-between; align-items: baseline; position: relative; }
-  .num { font-family: "Space Grotesk", sans-serif; font-style: italic; font-weight: 500; font-size: 88px; opacity: 0.4; line-height: 1; }
+  .num { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 88px; opacity: 0.4; line-height: 1; }
   .brand { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 40px; }
-  .brand em { color: var(--accent); font-style: italic; }
+  .brand em { color: var(--accent); font-style: normal; }
+  .dark .brand em { color: var(--accent-light); }
   .dark .brand { color: #eef3f0; }
   .art { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
   .art svg { width: 62%; }
@@ -28,31 +29,31 @@
 <div id="cover" class="cover"></div>
 <script>
   const ART = {
-    elevation: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 88 L15 70 L42 70 L42 56 L69 56 L69 38 L96 38 L96 20 L128 20"/><circle cx="128" cy="20" r="5" fill="currentColor" stroke="none"/></svg>',
-    income: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="84" r="4" fill="currentColor" stroke="none"/><path d="M24 84 L64 64" opacity="0.45"/><path d="M24 84 L100 44" opacity="0.72"/><path d="M24 84 L136 20"/><path d="M120 16 L136 20 L130 35" stroke-width="2.5"/></svg>',
-    ledger: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="24" x2="132" y2="24" opacity="0.55"/><line x1="20" y1="45" x2="132" y2="45" opacity="0.55"/><line x1="20" y1="66" x2="92" y2="66" opacity="0.55"/><path d="M96 66 L107 77 L128 54" stroke-width="3.5"/></svg>',
-    investing: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="80" cy="52" r="9" fill="currentColor" stroke="none"/><circle cx="80" cy="52" r="26" opacity="0.6"/><circle cx="80" cy="52" r="41" opacity="0.32"/></svg>',
-    freedom: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M80 14 L112 24 L112 52 C112 72 98 85 80 90 C62 85 48 72 48 52 L48 24 Z"/><path d="M68 52 L77 61 L94 40" stroke-width="3.5"/></svg>',
+    launchpad: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="28" y1="88" x2="132" y2="88" opacity="0.5"/><path d="M80 76 L80 16"/><path d="M62 34 L80 16 L98 34"/><path d="M52 76 L52 62" opacity="0.45"/><path d="M108 76 L108 54" opacity="0.7"/></svg>',
+    gigs: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="80" cy="50" r="38"/><ellipse cx="80" cy="50" rx="16" ry="38" opacity="0.6"/><line x1="42" y1="50" x2="118" y2="50" opacity="0.6"/><circle cx="118" cy="22" r="6" fill="currentColor" stroke="none"/></svg>',
+    hustle: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="26" y="58" width="16" height="30" rx="2" opacity="0.5"/><rect x="50" y="44" width="16" height="44" rx="2" opacity="0.75"/><rect x="74" y="30" width="16" height="58" rx="2"/><circle cx="122" cy="40" r="20"/><path d="M122 31 L122 49 M115 40 L129 40" stroke-width="2.5"/></svg>',
+    academy: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M80 14 L128 34 L80 54 L32 34 Z"/><path d="M32 50 L80 70 L128 50" opacity="0.7"/><path d="M32 66 L80 86 L128 66" opacity="0.4"/></svg>',
+    freelance: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="38" y="34" width="84" height="54" rx="6"/><path d="M64 34 L64 22 C64 18 66 16 70 16 L90 16 C94 16 96 18 96 22 L96 34"/><line x1="38" y1="56" x2="122" y2="56" opacity="0.5"/><circle cx="80" cy="56" r="5" fill="currentColor" stroke="none"/></svg>',
     library: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="22" y="22" width="18" height="66" rx="2"/><rect x="46" y="14" width="18" height="74" rx="2" opacity="0.8"/><rect x="70" y="26" width="18" height="62" rx="2"/><rect x="94" y="18" width="18" height="70" rx="2" opacity="0.8"/><path d="M118 30 L134 26 L148 86 L132 90 Z"/></svg>',
     tools: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="30" y1="26" x2="130" y2="26" opacity="0.5"/><line x1="30" y1="52" x2="130" y2="52" opacity="0.5"/><line x1="30" y1="78" x2="130" y2="78" opacity="0.5"/><circle cx="96" cy="26" r="8" fill="currentColor" stroke="none"/><circle cx="56" cy="52" r="8" fill="currentColor" stroke="none"/><circle cx="110" cy="78" r="8" fill="currentColor" stroke="none"/></svg>',
     allaccess: '<svg viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M80 12 L90 40 L120 40 L96 58 L105 88 L80 70 L55 88 L64 58 L40 40 L70 40 Z"/></svg>',
   };
   const PRODUCTS = {
-    elevation: { num: "01", theme: "light", format: "90-Day Program", title: "Side Income Launchpad" },
-    income: { num: "02", theme: "dark", format: "30-Day Playbook", title: "Online Gig Playbook" },
-    ledger: { num: "03", theme: "light", format: "Tracking System", title: "The Side Hustle Ledger" },
-    investing: { num: "04", theme: "dark", format: "Beginner Guide", title: "Digital Product Academy" },
-    freedom: { num: "05", theme: "light", format: "Savings Blueprint", title: "The Freelance Starter Kit" },
+    launchpad: { num: "01", theme: "light", format: "30-Day Program", title: "Side Income Launchpad" },
+    gigs: { num: "02", theme: "dark", format: "Gig Guide", title: "Online Gig Playbook" },
+    hustle: { num: "03", theme: "light", format: "Tracking System", title: "The Side Hustle Ledger" },
+    academy: { num: "04", theme: "dark", format: "Complete Course", title: "Digital Product Academy" },
+    freelance: { num: "05", theme: "light", format: "Starter Kit", title: "The Freelance Starter Kit" },
     library: { num: "01–05", theme: "dark", format: "Complete Bundle", title: "The Full Infoelev Library" },
     tools: { num: "", theme: "light", format: "Monthly Membership", title: "Infoelev Tools" },
     allaccess: { num: "", theme: "dark", format: "Monthly Membership", title: "Infoelev All Access" },
   };
-  const key = new URLSearchParams(location.search).get("p") || "elevation";
+  const key = new URLSearchParams(location.search).get("p") || "launchpad";
   const p = PRODUCTS[key];
   const el = document.getElementById("cover");
   el.className = "cover " + p.theme;
   el.innerHTML =
-    '<div class="top"><span class="num">' + p.num + '</span><span class="brand">Elev<em>Pay</em></span></div>' +
+    '<div class="top"><span class="num">' + p.num + '</span><span class="brand">Info<em>elev</em></span></div>' +
     '<div class="art">' + ART[key] + '</div>' +
     '<div class="format">' + p.format + '</div>' +
     '<h1>' + p.title + '</h1>';

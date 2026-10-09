@@ -38,6 +38,81 @@ function AppStore(productId) {
   };
 }
 
+function escapeAttr(s) {
+  return String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+
+// Generic editable-table tool used by every app. cfg:
+//   storeKey, title, dek, addLabel
+//   columns: [{ key, label, type: "text"|"number", placeholder }]
+//   defaults: initial rows (array of objects keyed by column key)
+//   fields:   optional single inputs above the table [{ key, label, value }]
+//   summary(rows, fields) -> { className, html }
+function renderTableTool(container, store, cfg) {
+  const blank = () => Object.fromEntries(cfg.columns.map((c) => [c.key, ""]));
+  let rows = store.getTool(cfg.storeKey, []);
+  if (!rows.length) rows = (cfg.defaults || [blank()]).map((r) => ({ ...blank(), ...r }));
+  const fields = Object.fromEntries((cfg.fields || []).map((f) => [f.key, store.getTool(cfg.storeKey + "_" + f.key, f.value)]));
+
+  container.innerHTML =
+    '<div class="app-eyebrow">Tool</div>' +
+    '<h1 class="app-title">' + cfg.title + '</h1>' +
+    '<p class="app-dek">' + cfg.dek + '</p>' +
+    '<div class="app-rule"></div>' +
+    '<div class="tool-card">' +
+    (cfg.fields || []).map((f) =>
+      '<div class="tool-field"><label for="tt-f-' + f.key + '">' + f.label + '</label>' +
+      '<input type="number" id="tt-f-' + f.key + '" data-field="' + f.key + '" value="' + escapeAttr(fields[f.key]) + '"></div>'
+    ).join("") +
+    '<table class="tool-table"><thead><tr>' + cfg.columns.map((c) => '<th>' + c.label + '</th>').join("") + '<th></th></tr></thead>' +
+    '<tbody class="tt-rows"></tbody></table>' +
+    '<button class="btn btn-ghost btn-sm tt-add">' + cfg.addLabel + '</button>' +
+    '<div class="tool-summary tt-total"></div>' +
+    '</div>';
+
+  const tbody = container.querySelector(".tt-rows");
+  const total = container.querySelector(".tt-total");
+
+  function persist() { store.setTool(cfg.storeKey, rows); }
+
+  function recalc() {
+    const s = cfg.summary(rows, fields);
+    total.className = "tool-summary tt-total " + (s.className || "");
+    total.innerHTML = s.html;
+  }
+
+  function renderRows() {
+    tbody.innerHTML = rows.map((r, i) =>
+      '<tr>' +
+      cfg.columns.map((c) =>
+        '<td' + (c.type === "number" ? ' class="amount-col"' : '') + '><input type="' + c.type + '" data-i="' + i + '" data-k="' + c.key + '" value="' + escapeAttr(r[c.key]) + '" placeholder="' + escapeAttr(c.placeholder || "") + '"></td>'
+      ).join("") +
+      '<td><button class="tool-remove-btn" data-i="' + i + '">&times;</button></td>' +
+      '</tr>'
+    ).join("");
+    tbody.querySelectorAll("input").forEach((el) => el.addEventListener("input", () => {
+      rows[+el.dataset.i][el.dataset.k] = el.value; persist(); recalc();
+    }));
+    tbody.querySelectorAll(".tool-remove-btn").forEach((el) => el.addEventListener("click", () => {
+      rows.splice(+el.dataset.i, 1);
+      if (!rows.length) rows.push(blank());
+      persist(); renderRows(); recalc();
+    }));
+  }
+
+  container.querySelectorAll("[data-field]").forEach((el) => el.addEventListener("input", () => {
+    fields[el.dataset.field] = el.value;
+    store.setTool(cfg.storeKey + "_" + el.dataset.field, el.value);
+    recalc();
+  }));
+  container.querySelector(".tt-add").addEventListener("click", () => { rows.push(blank()); persist(); renderRows(); recalc(); });
+
+  renderRows();
+  recalc();
+}
+
+const num = (v) => parseFloat(v) || 0;
+
 function formatCurrency(n) {
   const num = Number(n) || 0;
   return "$" + num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });

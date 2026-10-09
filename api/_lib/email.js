@@ -11,8 +11,8 @@ function layout(title, bodyHtml) {
   return `<!doctype html><html><body style="margin:0;background:#f3f6f4;font-family:Arial,Helvetica,sans-serif;color:#1f2724;">
 <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 12px;"><tr><td align="center">
 <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #d5e2db;border-radius:14px;padding:36px;">
-<tr><td style="font-family:Georgia,serif;font-size:22px;font-weight:bold;color:#111816;">Elev<span style="color:#0f8a5f;font-style:italic;">Pay</span></td></tr>
-<tr><td style="padding-top:24px;"><h1 style="font-family:Georgia,serif;font-size:24px;color:#111816;margin:0 0 16px;">${escape(title)}</h1>${bodyHtml}</td></tr>
+<tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:#111816;">Info<span style="color:#0f8a5f;">elev</span></td></tr>
+<tr><td style="padding-top:24px;"><h1 style="font-family:Arial,Helvetica,sans-serif;font-size:24px;color:#111816;margin:0 0 16px;">${escape(title)}</h1>${bodyHtml}</td></tr>
 <tr><td style="padding-top:28px;border-top:1px solid #d5e2db;font-size:12px;color:#6b7a74;line-height:1.6;">
 Questions? Reply to this email or visit ${siteUrl()}/contact.html<br>
 Infoelev Digital Business LLC &middot; 8200 NW 41st Street, 2nd Floor, Doral, FL 33166, United States</td></tr>

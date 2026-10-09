@@ -1,87 +1,73 @@
 // Course chapters for side-income-launchpad. Served only to members with full access (see middleware.js).
 window.ELEV_CHAPTERS = [
   {
-    id: "ch1", label: "1. Where You Stand", module: "Module 1",
-    heading: "Where You Stand", dek: "A full, judgment-free financial audit — before you change anything.",
+    id: "ch1", label: "1. The Side Income Mindset", module: "Week 1",
+    heading: "The Side Income Mindset", dek: "Why most side projects stall — and the small shift that keeps yours moving.",
     body: [
-      { type: "p", text: "Before you touch a budget or a payoff plan, you need one honest snapshot of where things stand today. Most people skip this step because it's uncomfortable, but it's the only way to know if what you try next is actually working." },
-      { type: "h", text: "What to gather" },
+      { type: "p", text: "Most side income attempts don't fail because the idea was bad. They fail because the plan depended on motivation, and motivation runs out by week two. The Launchpad replaces motivation with a calendar: small, scheduled actions that add up whether you feel inspired or not." },
+      { type: "h", text: "Three rules for the next 30 days" },
       { type: "list", items: [
-        "Every account balance: checking, savings, credit cards, loans.",
-        "Every recurring bill, even the small ones you pay on autopilot.",
-        "Your actual take-home income for the last three months, not just your salary."
+        "Protect a fixed time block — even 45 minutes, four days a week, beats a vague \"whenever I can.\"",
+        "Aim for your first dollar, not your first thousand. Proof beats projections.",
+        "Ship before it feels ready. Feedback from one real buyer is worth more than a month of polishing."
       ] },
-      { type: "action", text: "List every debt you currently carry — balance, minimum payment, and interest rate if you know it. You'll use this list again in the next chapter." }
+      { type: "action", text: "Open your calendar and book four recurring 45-minute blocks per week for the next 30 days. Name them \"Launchpad.\"" }
     ]
   },
   {
-    id: "ch2", label: "2. The Debt Map", module: "Module 2",
-    heading: "The Debt Map", dek: "Turning a list of debts into a map you can actually act on.",
+    id: "ch2", label: "2. Picking Your First Idea", module: "Week 1",
+    heading: "Picking Your First Idea", dek: "A simple filter for choosing the idea you can actually start this month.",
     body: [
-      { type: "p", text: "Once you have your numbers, the next step is ordering them — not by how much you owe, but by how you'll attack them." },
-      { type: "h", text: "Two ways to sort your list" },
+      { type: "p", text: "You probably have more ideas than time. The goal of this chapter is to pick one — not the perfect one, but the one with the shortest path to a first sale. Use the Idea Scorecard tool to compare your options side by side." },
+      { type: "h", text: "Score every idea on three things" },
       { type: "list", items: [
-        "By balance, smallest to largest — the \"snowball\" order.",
-        "By interest rate, highest to lowest — the \"avalanche\" order.",
-        "Flag any debt that's in collections or past due; those often need attention first, regardless of size."
+        "Demand: are people already paying for something similar? Look for existing listings, ads, or job posts.",
+        "Speed: how quickly could you deliver a first version — days, weeks, or months?",
+        "Fit: does it use skills, tools, or knowledge you already have?"
       ] },
-      { type: "action", text: "Open the Debt Snapshot tool, enter every debt from Chapter 1, and try sorting it both ways to see which order feels more sustainable to you." }
+      { type: "action", text: "Add at least three ideas to the Idea Scorecard, rate each from 1 to 5 on demand, speed, and fit, and commit to the highest score." }
     ]
   },
   {
-    id: "ch3", label: "3. Choosing Your Payoff Strategy", module: "Module 3",
-    heading: "Choosing Your Payoff Strategy", dek: "Snowball or avalanche — picking the one you'll actually stick with.",
+    id: "ch3", label: "3. Your Minimum Offer", module: "Week 2",
+    heading: "Your Minimum Offer", dek: "Turning an idea into something a stranger can say yes to.",
     body: [
-      { type: "p", text: "The avalanche method tends to save more in interest. The snowball method tends to keep people motivated longer because of early wins. Neither is \"wrong\" — the one you finish beats the one you abandon." },
-      { type: "h", text: "Questions to help you decide" },
+      { type: "p", text: "An offer is an idea with edges: who it's for, what they get, when they get it, and what it costs. Until it has all four, nobody can buy it. Keep the first version small enough to deliver in a few hours." },
+      { type: "h", text: "Fill in the offer sentence" },
       { type: "list", items: [
-        "Do quick wins keep you motivated, or do you need to see the math to stay disciplined?",
-        "How many separate debts are you juggling right now?",
-        "Is any single debt costing you noticeably more in interest than the others?"
+        "\"I help [specific person] get [specific result]...\"",
+        "\"...by delivering [concrete deliverable] within [timeframe]...\"",
+        "\"...for [one clear price].\""
       ] },
-      { type: "action", text: "Commit to one method in the Debt Snapshot tool and mark your first target debt." }
+      { type: "action", text: "Write your offer sentence and read it out loud. If a friend can't repeat it back in one breath, cut it down." }
     ]
   },
   {
-    id: "ch4", label: "4. Rebuilding Your Budget", module: "Module 4",
-    heading: "Rebuilding Your Budget", dek: "A budget designed to survive a real month, not a perfect one.",
+    id: "ch4", label: "4. Getting Seen", module: "Week 3",
+    heading: "Getting Seen", dek: "Putting your offer in front of the first twenty people.",
     body: [
-      { type: "p", text: "A budget only works if it matches how you actually live. Instead of starting from a generic template, build yours from your last three months of real spending." },
-      { type: "h", text: "A structure that tends to hold up" },
+      { type: "p", text: "Your first buyers almost never find you. You go to them — through people you already know, communities where your buyer already spends time, and marketplaces that bring their own traffic." },
+      { type: "h", text: "Three channels to try this week" },
       { type: "list", items: [
-        "Fixed essentials — housing, utilities, minimum debt payments — first.",
-        "A realistic, not aspirational, number for variable spending like food and transport.",
-        "A specific line for debt payoff, treated like a bill, not an afterthought."
+        "Your warm network: a short, honest message to people who might need it or know someone who does.",
+        "One community: a forum, group, or subreddit where your buyer asks questions — help first, mention your offer second.",
+        "One marketplace listing: a complete profile on a platform where buyers already search for your service."
       ] },
-      { type: "action", text: "Write down your fixed essentials total and your debt payoff target for next month." }
+      { type: "action", text: "Send your offer to ten people in your warm network and publish one marketplace listing before the week ends." }
     ]
   },
   {
-    id: "ch5", label: "5. Automating Progress", module: "Module 5",
-    heading: "Automating Progress", dek: "Systems that keep moving even on your busiest weeks.",
+    id: "ch5", label: "5. From First Sale to Routine", module: "Week 4",
+    heading: "From First Sale to Routine", dek: "What to do after the first payment arrives.",
     body: [
-      { type: "p", text: "Willpower runs out. Automation doesn't. The goal here is to make your plan the default, not something you have to remember to do every week." },
-      { type: "h", text: "What's worth automating first" },
+      { type: "p", text: "The first sale proves the offer can work. The next step is making it repeatable: a simple delivery checklist, a way to ask for reviews, and a weekly rhythm for finding the next buyer." },
+      { type: "h", text: "Build the routine" },
       { type: "list", items: [
-        "An automatic transfer toward your debt target, timed right after payday.",
-        "Bill reminders or autopay for anything with a late fee.",
-        "A recurring 10-minute weekly check-in on your calendar."
+        "Write a delivery checklist so every order is handled the same way.",
+        "Ask every happy buyer for one sentence of feedback you can use as a testimonial.",
+        "Keep one Launchpad block each week dedicated only to outreach."
       ] },
-      { type: "action", text: "Set up one automatic transfer this week, even a small one, tied to your chosen debt target." }
-    ]
-  },
-  {
-    id: "ch6", label: "6. Locking In the Gains", module: "Module 6",
-    heading: "Locking In the Gains", dek: "What happens after a debt is paid off.",
-    body: [
-      { type: "p", text: "The most common mistake after clearing a debt is letting that freed-up money quietly disappear into daily spending. The habit that got you here is the same one that builds what comes next." },
-      { type: "h", text: "Redirecting the win" },
-      { type: "list", items: [
-        "Roll the payment you were making into your next debt target, or into savings once debts are cleared.",
-        "Set one new, specific savings goal before the \"extra\" money has a chance to vanish.",
-        "Revisit your Debt Snapshot tool monthly to watch the balance actually move."
-      ] },
-      { type: "action", text: "Decide right now where your first freed-up payment will go once your first debt is cleared, and write it down." }
+      { type: "action", text: "Set a realistic goal for next month — number of sales, not dollars — and schedule the outreach blocks needed to reach it." }
     ]
   }
 ];

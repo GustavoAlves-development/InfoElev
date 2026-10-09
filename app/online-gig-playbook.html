@@ -45,64 +45,28 @@
       '<div class="app-body">' + renderBlocks(ch.body) + '</div>';
   }
 
-  function renderIncomePlanner(container, store) {
-    let rows = store.getTool("planner", []);
-    if (!rows.length) rows = [{ name: "", hours: "", target: "" }];
-
-    container.innerHTML =
-      '<div class="app-eyebrow">Tool</div>' +
-      '<h1 class="app-title">Income Stream Planner</h1>' +
-      '<p class="app-dek">List each income stream you are working on or considering. Totals update automatically.</p>' +
-      '<div class="app-rule"></div>' +
-      '<div class="tool-card">' +
-      '<table class="tool-table"><thead><tr><th>Income stream</th><th>Hours / week</th><th>Target / month</th><th></th></tr></thead>' +
-      '<tbody id="ip-rows"></tbody></table>' +
-      '<button class="btn btn-ghost btn-sm" id="ip-add">+ Add income stream</button>' +
-      '<div class="tool-summary" id="ip-total"></div>' +
-      '</div>';
-
-    const tbody = document.getElementById("ip-rows");
-
-    function renderRows() {
-      tbody.innerHTML = rows.map((r, i) =>
-        '<tr>' +
-        '<td><input type="text" class="ip-name" data-i="' + i + '" value="' + r.name + '" placeholder="e.g. Freelance design"></td>' +
-        '<td class="amount-col"><input type="number" class="ip-hours" data-i="' + i + '" value="' + r.hours + '" placeholder="0"></td>' +
-        '<td class="amount-col"><input type="number" class="ip-target" data-i="' + i + '" value="' + r.target + '" placeholder="0.00"></td>' +
-        '<td><button class="tool-remove-btn" data-i="' + i + '">&times;</button></td>' +
-        '</tr>'
-      ).join("");
-      tbody.querySelectorAll(".ip-name").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].name = el.value; persist(); }));
-      tbody.querySelectorAll(".ip-hours").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].hours = el.value; persist(); recalc(); }));
-      tbody.querySelectorAll(".ip-target").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].target = el.value; persist(); recalc(); }));
-      tbody.querySelectorAll(".tool-remove-btn").forEach((el) => el.addEventListener("click", () => {
-        rows.splice(+el.dataset.i, 1);
-        if (!rows.length) rows.push({ name: "", hours: "", target: "" });
-        persist(); renderRows(); recalc();
-      }));
-    }
-
-    function recalc() {
-      const totalHours = rows.reduce((s, r) => s + (parseFloat(r.hours) || 0), 0);
-      const totalTarget = rows.reduce((s, r) => s + (parseFloat(r.target) || 0), 0);
-      document.getElementById("ip-total").innerHTML = "<span>" + totalHours + " hrs/week total</span><span>" + formatCurrency(totalTarget) + "/month target</span>";
-    }
-
-    function persist() { store.setTool("planner", rows); }
-
-    document.getElementById("ip-add").addEventListener("click", () => {
-      rows.push({ name: "", hours: "", target: "" });
-      persist(); renderRows(); recalc();
-    });
-
-    renderRows();
-    recalc();
-  }
+  const TOOL = {
+      storeKey: "gigs",
+      title: "Gig Earnings Tracker",
+      dek: "Log earnings, fees and hours per platform to see what you really make per hour.",
+      addLabel: "+ Add platform",
+      columns: [
+        { key: "platform", label: "Platform / gig", type: "text", placeholder: "e.g. User testing" },
+        { key: "earned", label: "Earned", type: "number", placeholder: "0.00" },
+        { key: "fees", label: "Fees", type: "number", placeholder: "0.00" },
+        { key: "hours", label: "Hours", type: "number", placeholder: "0" }
+      ],
+      summary(rows) {
+        const net = rows.reduce((s, r) => s + num(r.earned) - num(r.fees), 0);
+        const hours = rows.reduce((s, r) => s + num(r.hours), 0);
+        return { className: net >= 0 ? "balanced" : "unbalanced", html: "<span>" + formatCurrency(net) + " net</span><span>" + (hours ? formatCurrency(net / hours) + "/hour" : "—") + "</span>" };
+      }
+    };
 
   const ROADMAP_ITEMS = buildRoadmapItems(CHAPTERS);
 
   const sections = CHAPTERS.map((ch) => ({ id: ch.id, group: "content", label: ch.label, render: (c) => renderContentSection(c, ch) }));
-  sections.push({ id: "tool-planner", group: "tools", label: "Income Stream Planner", render: renderIncomePlanner });
+  sections.push({ id: "tool-gigs", group: "tools", label: "Gig Earnings Tracker", render: (c, store) => renderTableTool(c, store, TOOL) });
   if (CHAPTERS.length) sections.push({ id: "tool-roadmap", group: "tools", label: "Action Roadmap", render: (c, store) => renderRoadmap(c, store, ROADMAP_ITEMS) });
 
   initAppShell({ productId: "online-gig-playbook", sections: sections, locked: !CHAPTERS.length });

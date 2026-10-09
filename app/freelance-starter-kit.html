@@ -45,75 +45,32 @@
       '<div class="app-body">' + renderBlocks(ch.body) + '</div>';
   }
 
-  function renderTargetCalculator(container, store) {
-    let rows = store.getTool("expenses", []);
-    if (!rows.length) rows = [
-      { category: "Housing", amount: "" },
-      { category: "Utilities", amount: "" },
-      { category: "Food", amount: "" }
-    ];
-    let months = store.getTool("months", 3);
-
-    container.innerHTML =
-      '<div class="app-eyebrow">Tool</div>' +
-      '<h1 class="app-title">Target Number Calculator</h1>' +
-      '<p class="app-dek">List your essential monthly expenses, then set how many months of coverage you want.</p>' +
-      '<div class="app-rule"></div>' +
-      '<div class="tool-card">' +
-      '<table class="tool-table"><thead><tr><th>Essential expense</th><th>Monthly amount</th><th></th></tr></thead>' +
-      '<tbody id="tc-rows"></tbody></table>' +
-      '<button class="btn btn-ghost btn-sm" id="tc-add">+ Add expense</button>' +
-      '<div class="tool-summary" id="tc-monthly"></div>' +
-      '</div>' +
-      '<div class="tool-card">' +
-      '<div class="tool-field"><label for="tc-months">Months of coverage</label><input type="number" id="tc-months" value="' + months + '"></div>' +
-      '<div class="tool-summary balanced" id="tc-final"></div>' +
-      '</div>';
-
-    const tbody = document.getElementById("tc-rows");
-    const monthsInput = document.getElementById("tc-months");
-
-    function renderRows() {
-      tbody.innerHTML = rows.map((r, i) =>
-        '<tr>' +
-        '<td><input type="text" class="tc-cat" data-i="' + i + '" value="' + r.category + '" placeholder="e.g. Rent"></td>' +
-        '<td class="amount-col"><input type="number" class="tc-amount" data-i="' + i + '" value="' + r.amount + '" placeholder="0.00"></td>' +
-        '<td><button class="tool-remove-btn" data-i="' + i + '">&times;</button></td>' +
-        '</tr>'
-      ).join("");
-      tbody.querySelectorAll(".tc-cat").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].category = el.value; persist(); }));
-      tbody.querySelectorAll(".tc-amount").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].amount = el.value; persist(); recalc(); }));
-      tbody.querySelectorAll(".tool-remove-btn").forEach((el) => el.addEventListener("click", () => {
-        rows.splice(+el.dataset.i, 1);
-        if (!rows.length) rows.push({ category: "", amount: "" });
-        persist(); renderRows(); recalc();
-      }));
-    }
-
-    function recalc() {
-      const totalMonthly = rows.reduce((s, r) => s + (parseFloat(r.amount) || 0), 0);
-      const m = parseFloat(monthsInput.value) || 0;
-      document.getElementById("tc-monthly").innerHTML = "<span>" + formatCurrency(totalMonthly) + "/month in essentials</span><span></span>";
-      document.getElementById("tc-final").innerHTML = "<span>Your Freedom Fund target</span><span>" + formatCurrency(totalMonthly * m) + "</span>";
-    }
-
-    function persist() { store.setTool("expenses", rows); }
-
-    document.getElementById("tc-add").addEventListener("click", () => {
-      rows.push({ category: "", amount: "" });
-      persist(); renderRows(); recalc();
-    });
-
-    monthsInput.addEventListener("input", () => { store.setTool("months", monthsInput.value); recalc(); });
-
-    renderRows();
-    recalc();
-  }
+  const TOOL = {
+      storeKey: "rate",
+      title: "Freelance Rate Calculator",
+      dek: "List what you want to take home and what your business costs each month, then set how many hours you can realistically bill.",
+      addLabel: "+ Add line",
+      fields: [{ key: "hours", label: "Billable hours per month", value: 40 }],
+      defaults: [
+        { item: "Take-home income goal", amount: "" },
+        { item: "Software & tools", amount: "" },
+        { item: "Tax set-aside", amount: "" }
+      ],
+      columns: [
+        { key: "item", label: "Monthly need", type: "text", placeholder: "e.g. Internet" },
+        { key: "amount", label: "Amount / month", type: "number", placeholder: "0.00" }
+      ],
+      summary(rows, f) {
+        const monthly = rows.reduce((s, r) => s + num(r.amount), 0);
+        const hours = num(f.hours);
+        return { className: "balanced", html: "<span>" + formatCurrency(monthly) + "/month needed</span><span>Minimum rate: " + (hours ? formatCurrency(monthly / hours) + "/hour" : "—") + "</span>" };
+      }
+    };
 
   const ROADMAP_ITEMS = buildRoadmapItems(CHAPTERS);
 
   const sections = CHAPTERS.map((ch) => ({ id: ch.id, group: "content", label: ch.label, render: (c) => renderContentSection(c, ch) }));
-  sections.push({ id: "tool-calc", group: "tools", label: "Target Number Calculator", render: renderTargetCalculator });
+  sections.push({ id: "tool-rate", group: "tools", label: "Freelance Rate Calculator", render: (c, store) => renderTableTool(c, store, TOOL) });
   if (CHAPTERS.length) sections.push({ id: "tool-roadmap", group: "tools", label: "Action Roadmap", render: (c, store) => renderRoadmap(c, store, ROADMAP_ITEMS) });
 
   initAppShell({ productId: "freelance-starter-kit", sections: sections, locked: !CHAPTERS.length });

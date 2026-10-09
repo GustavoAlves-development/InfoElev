@@ -21,39 +21,39 @@ const CURRENCY = "usd";
 const CATALOG = [
   {
     id: "infoelev_side_income_launchpad", name: "Side Income Launchpad", amount: 2900, cover: "launchpad",
-    description: "A 90-day, step-by-step system to get out of debt, rebuild your budget, and put your finances on solid ground. Includes the full 90-day roadmap, debt payoff worksheets, bonus budget templates and email support. One-time payment, lifetime access.",
+    description: "A 30-day, step-by-step method to pick one realistic side income idea, shape it into a clear offer, and put it in front of real buyers. Includes 5 chapters, the 30-day launch calendar, the Idea Scorecard tool, offer and outreach templates, the Action Roadmap and email support. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_digital_product_academy", name: "Digital Product Academy", amount: 5400, cover: "academy",
-    description: "An honest, jargon-free introduction to how investing actually works: risk, diversification, and building a portfolio from zero. Includes the full 5-module guide, a plain-language glossary, the starter portfolio worksheet and email support. One-time payment, lifetime access.",
+    description: "A beginner-friendly course on creating a first digital product: validating demand, building version one, pricing, packaging and launching. Includes 5 modules, the validation playbook, the version-one blueprint, the Product Revenue Planner tool and email support. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_freelance_kit_starter", name: "The Freelance Starter Kit — Starter", amount: 1200, cover: "freelance",
-    description: "A focused plan for building a real emergency fund. Includes the full 5-module blueprint and the target number calculator. One-time payment, lifetime access.",
+    description: "Start freelancing with a plan: define one clear service, set a rate from real numbers, write proposals and find first clients. Includes the full 5-module kit, the Freelance Rate Calculator and the Action Roadmap. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_freelance_kit_complete", name: "The Freelance Starter Kit — Complete", amount: 2200, cover: "freelance",
-    description: "A focused plan for building a real emergency fund and the cushion that makes every other decision easier. Includes the full 5-module blueprint, the target number calculator, the autopilot setup guide and email support. One-time payment, lifetime access.",
+    description: "Everything in The Freelance Starter Kit Starter (5 modules, Freelance Rate Calculator and Action Roadmap), plus email support and all future updates. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_online_gig_playbook", name: "Online Gig Playbook", amount: 1700, cover: "gigs",
-    description: "A practical map of extra-income paths (freelancing, digital services and marketplaces) with real steps for your first 30 days. Includes the 30-day launch plan, the skills-to-income map, outreach scripts and email support. One-time payment, lifetime access.",
+    description: "A practical guide to online gigs: the main gig categories, how to compare platforms, a profile checklist and how to track real net hourly pay. Includes 5 modules, the Gig Earnings Tracker tool and email support. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_side_hustle_ledger_complete", name: "The Side Hustle Ledger — Complete", amount: 1500, cover: "hustle",
-    description: "A simple, sustainable budgeting and tracking system for people who bounced off spreadsheets and apps before. Includes the ledger template, the category system guide, the weekly check-in guide and email support. One-time payment, lifetime access.",
+    description: "A simple system to track side-hustle income and costs, plan tax set-asides and review results monthly. Includes 5 modules, the Side Hustle Ledger tool, the monthly review guide and email support. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_side_hustle_ledger_elevated", name: "The Side Hustle Ledger — Elevated", amount: 2800, cover: "hustle",
-    description: "Everything in The Side Hustle Ledger Complete (ledger template, category system guide and weekly check-in guide), plus priority email support and all future updates. One-time payment, lifetime access.",
+    description: "Everything in The Side Hustle Ledger Complete (5 modules, ledger tool and monthly review guide), plus priority email support and all future updates. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_full_library", name: "The Full Infoelev Library", amount: 9000, cover: "library",
-    description: "All five Infoelev systems at their complete level: Side Income Launchpad, Online Gig Playbook, The Side Hustle Ledger, Digital Product Academy and The Freelance Starter Kit, plus email support. One-time payment, lifetime access.",
+    description: "All five Infoelev programs at their complete level: Side Income Launchpad, Online Gig Playbook, The Side Hustle Ledger, Digital Product Academy and The Freelance Starter Kit, plus email support. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_tools", name: "Infoelev Tools", amount: 900, monthly: true, cover: "tools",
-    description: "Monthly access to all five Infoelev interactive tools: the budget ledger with weekly check-ins, the debt payoff planner, the emergency fund and income trackers, and the portfolio mix worksheet. Renews monthly, cancel anytime.",
+    description: "Monthly access to all five Infoelev interactive tools: Idea Scorecard, Product Revenue Planner, Freelance Rate Calculator, Gig Earnings Tracker and Side Hustle Ledger. Courses not included. Renews monthly, cancel anytime.",
   },
   {
     id: "infoelev_all_access", name: "Infoelev All Access", amount: 1900, monthly: true, cover: "allaccess",
@@ -61,9 +61,8 @@ const CATALOG = [
   },
 ];
 
-// Products from the first version of this script, which kept two tiers under one product.
-// They are replaced by the per-tier products above and get archived (with their prices).
-const LEGACY = ["infoelev_freelance_starter_kit", "infoelev_side_hustle_ledger"];
+// Product IDs to archive in Stripe (none yet).
+const LEGACY = [];
 
 const apply = process.argv.includes("--apply");
 const key = process.env.STRIPE_SECRET_KEY;
