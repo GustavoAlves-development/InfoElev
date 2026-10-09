@@ -1,0 +1,9 @@
+.claude/
+admin/
+.env*
+node_modules/
+
+.vercel
+.env*
+.agents/
+skills-lock.json

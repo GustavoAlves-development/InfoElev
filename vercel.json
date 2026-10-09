@@ -1,0 +1,12 @@
+{
+  "redirects": [
+    { "source": "/app", "destination": "/account.html", "permanent": false },
+    { "source": "/app/", "destination": "/account.html", "permanent": false },
+    { "source": "/login", "destination": "/login.html", "permanent": false },
+    { "source": "/account", "destination": "/account.html", "permanent": false },
+    { "source": "/admin", "destination": "/admin.html", "permanent": false },
+    { "source": "/library", "destination": "/library.html", "permanent": false },
+    { "source": "/reset", "destination": "/reset.html", "permanent": false },
+    { "source": "/welcome", "destination": "/welcome.html", "permanent": false }
+  ]
+}

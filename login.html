@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Login | Infoelev</title>
+<meta name="description" content="Log in to your Infoelev member account.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#111816"/><path d="M22 70 L42 50 L54 60 L74 38" fill="none" stroke="#22B07D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 36 H76 V54" fill="none" stroke="#C9ECDC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Info<span>elev</span>
+    </a>
+    <div class="nav-links">
+      <a href="/#products">Products</a>
+      <a href="/#about">About</a>
+      <a href="/#principles">Principles</a>
+      <a href="/login.html">Member Login</a>
+    </div>
+    <div class="nav-actions">
+      <a href="/" class="btn btn-outline">Back to Home</a>
+      <button class="menu-toggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav">
+    <a href="/#products">Products</a>
+    <a href="/#about">About</a>
+    <a href="/#principles">Principles</a>
+    <a href="/">Back to Home</a>
+    <a href="/login.html">Member Login</a>
+  </div>
+</nav>
+
+<header class="page-hero page-hero--compact">
+  <div class="container reveal">
+    <span class="eyebrow">Members</span>
+    <h1>Log in to your account</h1>
+    <p>Use the email and password we sent you after your purchase.</p>
+  </div>
+</header>
+
+<section class="section-tight">
+  <div class="container auth-wrap">
+    <div class="auth-card reveal">
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-control" type="email" id="email" autocomplete="email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-control" type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <p class="form-error" id="login-error" role="alert"></p>
+        <button class="btn btn-primary btn-block" type="submit">Log in</button>
+      </form>
+      <div class="auth-links">
+        <a href="#" id="forgot-toggle">Forgot your password?</a>
+      </div>
+      <form id="forgot-form" class="auth-forgot" hidden novalidate>
+        <p>Enter your email and we'll send you a link to choose a new password.</p>
+        <div class="form-group">
+          <label class="form-label" for="forgot-email">Email</label>
+          <input class="form-control" type="email" id="forgot-email" autocomplete="email" required>
+        </div>
+        <p class="form-error" id="forgot-msg" role="status"></p>
+        <button class="btn btn-outline btn-block" type="submit">Send reset link</button>
+      </form>
+    </div>
+    <p class="auth-foot">Don't have an account yet? Your login is created automatically when you <a href="/#products">buy a product</a>.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand reveal">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#111816"/><path d="M22 70 L42 50 L54 60 L74 38" fill="none" stroke="#22B07D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 36 H76 V54" fill="none" stroke="#C9ECDC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Info<span>elev</span>
+        </a>
+        <p>Practical digital courses and guides for paying off debt, earning more, and building lasting financial stability.</p>
+      </div>
+      <div class="footer-col reveal d1">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/#products">Products</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#principles">Principles</a></li>
+        </ul>
+      </div>
+      <div class="footer-col reveal d2">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="refund.html">Refund Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col reveal d3">
+        <h4>Get in Touch</h4>
+        <p class="footer-contact-note"><a href="mailto:support@infoelev.com" style="color:var(--text-on-ink);font-weight:700;">support@infoelev.com</a></p>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>&copy; 2026 Infoelev Digital Business LLC. All rights reserved.</span>
+      <div class="footer-legal-entity">
+        <span><strong>Infoelev Digital Business LLC</strong> — a Wyoming limited liability company</span>
+        <span>&middot;</span>
+        <span>8200 NW 41st Street, 2nd Floor, Doral, FL 33166, United States</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/member.js"></script>
+<script>
+  const next = new URLSearchParams(location.search).get("next");
+  const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/account.html";
+  ElevMember.form("login-form", "login-error", async () => {
+    await ElevMember.api("/api/login", { email: document.getElementById("email").value, password: document.getElementById("password").value });
+    location.href = safeNext;
+  });
+  document.getElementById("forgot-toggle").addEventListener("click", (e) => {
+    e.preventDefault();
+    const f = document.getElementById("forgot-form");
+    f.hidden = !f.hidden;
+    document.getElementById("forgot-email").value = document.getElementById("email").value;
+  });
+  ElevMember.form("forgot-form", "forgot-msg", async () => {
+    const res = await ElevMember.api("/api/forgot", { email: document.getElementById("forgot-email").value });
+    ElevMember.note("forgot-msg", res.message, true);
+  });
+</script>
+</body>
+</html>

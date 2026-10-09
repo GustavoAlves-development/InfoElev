@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account | Infoelev</title>
+<meta name="description" content="Your Infoelev member account.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="/" class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#111816"/><path d="M22 70 L42 50 L54 60 L74 38" fill="none" stroke="#22B07D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 36 H76 V54" fill="none" stroke="#C9ECDC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Info<span>elev</span>
+    </a>
+    <div class="nav-links">
+      <a href="/#products">Products</a>
+      <a href="/#about">About</a>
+      <a href="/#principles">Principles</a>
+      <a href="/login.html">Member Login</a>
+    </div>
+    <div class="nav-actions">
+      <a href="/" class="btn btn-outline">Back to Home</a>
+      <button class="menu-toggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav">
+    <a href="/#products">Products</a>
+    <a href="/#about">About</a>
+    <a href="/#principles">Principles</a>
+    <a href="/">Back to Home</a>
+    <a href="/login.html">Member Login</a>
+  </div>
+</nav>
+
+<header class="page-hero page-hero--compact">
+  <div class="container reveal">
+    <span class="eyebrow">Members</span>
+    <h1>My account</h1>
+    
+  </div>
+</header>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="account-grid">
+      <div>
+        <div class="account-notice" id="locked-notice" hidden></div>
+        <h2 class="account-h">Your products</h2>
+        <div class="account-apps" id="account-apps"><p class="muted">Loading…</p></div>
+        <h2 class="account-h">Purchase history</h2>
+        <div class="auth-card account-card" id="account-purchases"></div>
+      </div>
+      <aside>
+        <div class="auth-card account-card">
+          <p class="muted" style="margin-bottom:4px">Logged in as</p>
+          <p><strong id="account-email"></strong></p>
+          <p id="admin-link" hidden><a href="/admin.html">Open admin panel &rarr;</a></p>
+          <a href="#" data-logout class="btn btn-outline btn-block" style="margin-top:14px">Log out</a>
+        </div>
+        <div class="auth-card account-card">
+          <h3 class="account-h3">Change password</h3>
+          <form id="password-form" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="pw-current">Current password</label>
+              <input class="form-control" type="password" id="pw-current" autocomplete="current-password">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pw-next">New password (8+ characters)</label>
+              <input class="form-control" type="password" id="pw-next" autocomplete="new-password">
+            </div>
+            <p class="form-error" id="pw-msg" role="status"></p>
+            <button class="btn btn-primary btn-block" type="submit">Update password</button>
+          </form>
+        </div>
+        <div class="auth-card account-card">
+          <h3 class="account-h3">Need help?</h3>
+          <p class="muted">Refunds within 7 days, subscription cancellations and access questions: <a href="/contact.html">contact us</a>.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand reveal">
+        <a href="/" class="brand">
+          <svg class="brand-mark" viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#111816"/><path d="M22 70 L42 50 L54 60 L74 38" fill="none" stroke="#22B07D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 36 H76 V54" fill="none" stroke="#C9ECDC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Info<span>elev</span>
+        </a>
+        <p>Practical digital courses and guides for paying off debt, earning more, and building lasting financial stability.</p>
+      </div>
+      <div class="footer-col reveal d1">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/#products">Products</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#principles">Principles</a></li>
+        </ul>
+      </div>
+      <div class="footer-col reveal d2">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="terms.html">Terms of Use</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="refund.html">Refund Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-col reveal d3">
+        <h4>Get in Touch</h4>
+        <p class="footer-contact-note"><a href="mailto:support@infoelev.com" style="color:var(--text-on-ink);font-weight:700;">support@infoelev.com</a></p>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>&copy; 2026 Infoelev Digital Business LLC. All rights reserved.</span>
+      <div class="footer-legal-entity">
+        <span><strong>Infoelev Digital Business LLC</strong> — a Wyoming limited liability company</span>
+        <span>&middot;</span>
+        <span>8200 NW 41st Street, 2nd Floor, Doral, FL 33166, United States</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/member.js"></script>
+<script>
+  ElevMember.api("/api/me").then((me) => {
+    document.getElementById("account-email").textContent = me.email;
+    document.getElementById("admin-link").hidden = !me.admin;
+    const owned = me.apps.filter((a) => a.level);
+    document.getElementById("account-apps").innerHTML = owned.length
+      ? owned.map((a) => '<a class="account-app" href="/app/' + a.id + '.html"><span class="account-app-name">' + ElevMember.esc(a.name) + '</span><span class="account-app-level">' + (a.level === "full" ? "Course + tools" : "Tools") + '</span><span class="account-app-open">Open &rarr;</span></a>').join("")
+      : '<p class="muted">You don\'t have any active products yet. <a href="/#products">Browse the library</a>.</p>';
+    document.getElementById("account-purchases").innerHTML = me.purchases.length
+      ? '<table class="data-table"><thead><tr><th>Product</th><th>Date</th><th>Status</th></tr></thead><tbody>' +
+        me.purchases.map((p) => "<tr><td>" + ElevMember.esc(p.product) + (p.monthly ? ' <span class="muted">(monthly)</span>' : "") + "</td><td>" + ElevMember.date(p.date) + '</td><td><span class="pill pill-' + p.status + '">' + p.status + "</span></td></tr>").join("") +
+        "</tbody></table>"
+      : '<p class="muted">No purchases yet.</p>';
+    const locked = new URLSearchParams(location.search).get("locked");
+    if (locked) {
+      const app = me.apps.find((a) => a.id === locked);
+      const notice = document.getElementById("locked-notice");
+      notice.innerHTML = (app ? "<strong>" + ElevMember.esc(app.name) + "</strong> isn't" : "That product isn't") + ' part of your account yet. <a href="/' + encodeURIComponent(locked) + '.html">See the product page</a>.';
+      notice.hidden = false;
+    }
+  }).catch(() => { location.href = "/login.html?next=/account.html"; });
+  ElevMember.form("password-form", "pw-msg", async () => {
+    await ElevMember.api("/api/password", { current: document.getElementById("pw-current").value, next: document.getElementById("pw-next").value });
+    document.getElementById("password-form").reset();
+    ElevMember.note("pw-msg", "Password updated.", true);
+  });
+</script>
+</body>
+</html>

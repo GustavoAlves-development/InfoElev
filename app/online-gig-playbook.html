@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Online Gig Playbook — App | Infoelev</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="app-sidebar">
+    <div class="logo">Info<span>elev</span></div>
+    <div class="product-name">Online Gig Playbook</div>
+    <div class="app-progress-wrap">
+      <div class="app-progress-label" id="app-progress-label"><span>0 of 0 read</span><span>0%</span></div>
+      <div class="app-progress-track"><div class="app-progress-fill" id="app-progress-fill" style="width:0%"></div></div>
+    </div>
+    <nav id="app-sidebar-nav"></nav>
+    <div class="app-sidebar-footer">
+      <a href="/online-gig-playbook.html">&larr; Back to product page</a>
+      <a href="/account.html">My account</a>
+      <a href="#" data-logout>Log out</a>
+    </div>
+  </aside>
+  <main class="app-main" id="app-main-content"></main>
+</div>
+
+<script src="/assets/js/app-shell.js"></script>
+<script src="/app/content/online-gig-playbook.js"></script>
+<script>
+  const CHAPTERS = window.ELEV_CHAPTERS || [];
+
+  function renderContentSection(container, ch) {
+    container.innerHTML =
+      '<div class="app-eyebrow">' + ch.module + '</div>' +
+      '<h1 class="app-title">' + ch.heading + '</h1>' +
+      '<p class="app-dek">' + ch.dek + '</p>' +
+      '<div class="app-rule"></div>' +
+      '<div class="app-body">' + renderBlocks(ch.body) + '</div>';
+  }
+
+  function renderIncomePlanner(container, store) {
+    let rows = store.getTool("planner", []);
+    if (!rows.length) rows = [{ name: "", hours: "", target: "" }];
+
+    container.innerHTML =
+      '<div class="app-eyebrow">Tool</div>' +
+      '<h1 class="app-title">Income Stream Planner</h1>' +
+      '<p class="app-dek">List each income stream you are working on or considering. Totals update automatically.</p>' +
+      '<div class="app-rule"></div>' +
+      '<div class="tool-card">' +
+      '<table class="tool-table"><thead><tr><th>Income stream</th><th>Hours / week</th><th>Target / month</th><th></th></tr></thead>' +
+      '<tbody id="ip-rows"></tbody></table>' +
+      '<button class="btn btn-ghost btn-sm" id="ip-add">+ Add income stream</button>' +
+      '<div class="tool-summary" id="ip-total"></div>' +
+      '</div>';
+
+    const tbody = document.getElementById("ip-rows");
+
+    function renderRows() {
+      tbody.innerHTML = rows.map((r, i) =>
+        '<tr>' +
+        '<td><input type="text" class="ip-name" data-i="' + i + '" value="' + r.name + '" placeholder="e.g. Freelance design"></td>' +
+        '<td class="amount-col"><input type="number" class="ip-hours" data-i="' + i + '" value="' + r.hours + '" placeholder="0"></td>' +
+        '<td class="amount-col"><input type="number" class="ip-target" data-i="' + i + '" value="' + r.target + '" placeholder="0.00"></td>' +
+        '<td><button class="tool-remove-btn" data-i="' + i + '">&times;</button></td>' +
+        '</tr>'
+      ).join("");
+      tbody.querySelectorAll(".ip-name").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].name = el.value; persist(); }));
+      tbody.querySelectorAll(".ip-hours").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].hours = el.value; persist(); recalc(); }));
+      tbody.querySelectorAll(".ip-target").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].target = el.value; persist(); recalc(); }));
+      tbody.querySelectorAll(".tool-remove-btn").forEach((el) => el.addEventListener("click", () => {
+        rows.splice(+el.dataset.i, 1);
+        if (!rows.length) rows.push({ name: "", hours: "", target: "" });
+        persist(); renderRows(); recalc();
+      }));
+    }
+
+    function recalc() {
+      const totalHours = rows.reduce((s, r) => s + (parseFloat(r.hours) || 0), 0);
+      const totalTarget = rows.reduce((s, r) => s + (parseFloat(r.target) || 0), 0);
+      document.getElementById("ip-total").innerHTML = "<span>" + totalHours + " hrs/week total</span><span>" + formatCurrency(totalTarget) + "/month target</span>";
+    }
+
+    function persist() { store.setTool("planner", rows); }
+
+    document.getElementById("ip-add").addEventListener("click", () => {
+      rows.push({ name: "", hours: "", target: "" });
+      persist(); renderRows(); recalc();
+    });
+
+    renderRows();
+    recalc();
+  }
+
+  const ROADMAP_ITEMS = buildRoadmapItems(CHAPTERS);
+
+  const sections = CHAPTERS.map((ch) => ({ id: ch.id, group: "content", label: ch.label, render: (c) => renderContentSection(c, ch) }));
+  sections.push({ id: "tool-planner", group: "tools", label: "Income Stream Planner", render: renderIncomePlanner });
+  if (CHAPTERS.length) sections.push({ id: "tool-roadmap", group: "tools", label: "Action Roadmap", render: (c, store) => renderRoadmap(c, store, ROADMAP_ITEMS) });
+
+  initAppShell({ productId: "online-gig-playbook", sections: sections, locked: !CHAPTERS.length });
+</script>
+</body>
+</html>

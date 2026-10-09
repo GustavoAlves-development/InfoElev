@@ -1,0 +1,180 @@
+// End-to-end tests for the member area, run in-process against the in-memory database.
+// Usage: node --test scripts/test-member-area.mjs
+
+import { test } from "node:test";
+import assert from "node:assert/strict";
+
+process.env.INFOELEV_MEMORY_DB = "1";
+process.env.SESSION_SECRET = "test-session-secret-0123456789-abcdefghij";
+process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
+process.env.ADMIN_EMAILS = "owner@elevpay.test";
+process.env.SITE_URL = "https://infoelev.test";
+globalThis.__elevSentEmails = [];
+
+const { default: middleware } = await import("../middleware.js");
+const webhook = await import("../api/webhook.js");
+const login = await import("../api/login.js");
+const me = await import("../api/me.js");
+const password = await import("../api/password.js");
+const forgot = await import("../api/forgot.js");
+const reset = await import("../api/reset.js");
+const adminUsers = await import("../api/admin/users.js");
+const { signWebhook } = await import("../api/_lib/stripe.js");
+const { grantPurchase } = await import("../api/_lib/fulfillment.js");
+
+const SITE = process.env.SITE_URL;
+const emails = globalThis.__elevSentEmails;
+const lastEmailTo = (to) => [...emails].reverse().find((e) => e.to === to);
+
+const req = (path, { method = "GET", body, cookie, headers = {} } = {}) =>
+  new Request(SITE + path, {
+    method,
+    headers: { "Content-Type": "application/json", ...(cookie ? { cookie } : {}), ...headers },
+    body: body === undefined ? undefined : typeof body === "string" ? body : JSON.stringify(body),
+  });
+
+let eventSeq = 0;
+async function sendEvent(type, object, id = "evt_" + ++eventSeq) {
+  const raw = JSON.stringify({ id, type, data: { object } });
+  const res = await webhook.POST(req("/api/webhook", { method: "POST", body: raw, headers: { "stripe-signature": signWebhook(raw, "whsec_test") } }));
+  return { status: res.status, body: await res.json() };
+}
+
+const checkout = (email, product, extra = {}) => ({
+  id: "cs_" + Math.random().toString(36).slice(2),
+  payment_status: "paid",
+  customer_details: { email },
+  metadata: { product },
+  amount_total: 900,
+  currency: "usd",
+  ...extra,
+});
+
+async function logIn(email, pw) {
+  const res = await login.POST(req("/api/login", { method: "POST", body: { email, password: pw } }));
+  return { status: res.status, cookie: (res.headers.get("set-cookie") || "").split(";")[0] };
+}
+
+const passwordFrom = (mail) => mail.text.match(/Password: (\S+)/)[1];
+const gate = async (path, cookie) => {
+  const res = await middleware(req(path, { cookie }));
+  return res ? res.status + " " + (res.headers.get("location") || "") : "pass";
+};
+
+test("anonymous visitors are sent to login and cannot load course content", async () => {
+  assert.match(await gate("/app/side-hustle-ledger.html"), /^302 .*\/login\.html\?next=%2Fapp%2Fside-hustle-ledger\.html$/);
+  assert.equal(await gate("/app/content/side-hustle-ledger.js"), "403 ");
+  assert.match(await gate("/admin.html"), /^302 .*login/);
+});
+
+test("webhook rejects unsigned or forged events", async () => {
+  const raw = JSON.stringify({ id: "evt_forged", type: "checkout.session.completed", data: { object: checkout("x@x.test", "infoelev_tools") } });
+  const res = await webhook.POST(req("/api/webhook", { method: "POST", body: raw, headers: { "stripe-signature": signWebhook(raw, "whsec_wrong") } }));
+  assert.equal(res.status, 400);
+});
+
+let toolsPassword, cookie;
+const buyer = "Buyer@Example.test";
+
+test("a Tools subscription creates the account and emails a generated password", async () => {
+  const r = await sendEvent("checkout.session.completed", checkout(buyer, "infoelev_tools", { subscription: "sub_tools_1" }));
+  assert.equal(r.body.result, "account created");
+  const mail = lastEmailTo("buyer@example.test");
+  assert.match(mail.subject, /Infoelev Tools/);
+  toolsPassword = passwordFrom(mail);
+  assert.match(toolsPassword, /^[a-z2-9]{4}-[a-z2-9]{4}-[a-z2-9]{4}$/);
+});
+
+test("login works only with the right password", async () => {
+  assert.equal((await logIn(buyer, "wrong-password")).status, 401);
+  const ok = await logIn("  BUYER@example.test ", toolsPassword);
+  assert.equal(ok.status, 200);
+  cookie = ok.cookie;
+  assert.match(cookie, /^infoelev_session=/);
+});
+
+test("Tools members open the apps but not the course chapters", async () => {
+  assert.equal(await gate("/app/side-hustle-ledger.html", cookie), "pass");
+  assert.equal(await gate("/app/content/side-hustle-ledger.js", cookie), "403 ");
+  assert.equal(await gate("/account.html", cookie), "pass");
+  assert.match(await gate("/admin.html", cookie), /^302 .*\/account\.html$/);
+  const data = await (await me.GET(req("/api/me", { cookie }))).json();
+  assert.equal(data.apps.find((a) => a.id === "side-hustle-ledger").level, "tools");
+});
+
+test("a second purchase is added to the same account without a new password", async () => {
+  const r = await sendEvent("checkout.session.completed", checkout(buyer, "infoelev_all_access", { subscription: "sub_all_1" }));
+  assert.equal(r.body.result, "product added");
+  assert.doesNotMatch(lastEmailTo("buyer@example.test").text, /Password:/);
+  assert.equal(await gate("/app/content/side-hustle-ledger.js", cookie), "pass");
+});
+
+test("duplicate webhook deliveries are processed once", async () => {
+  const obj = checkout("dup@example.test", "infoelev_side_income_launchpad");
+  assert.equal((await sendEvent("checkout.session.completed", obj, "evt_dup")).body.result, "account created");
+  assert.equal((await sendEvent("checkout.session.completed", obj, "evt_dup")).body.result, "already processed");
+  assert.equal(emails.filter((e) => e.to === "dup@example.test").length, 1);
+});
+
+test("canceling a subscription removes only what it granted", async () => {
+  await sendEvent("customer.subscription.deleted", { id: "sub_all_1", status: "canceled" });
+  const data = await (await me.GET(req("/api/me", { cookie }))).json();
+  assert.equal(data.apps.find((a) => a.id === "side-hustle-ledger").level, "tools"); // Tools plan still active
+  assert.equal(await gate("/app/content/side-hustle-ledger.js", cookie), "403 ");
+  await sendEvent("customer.subscription.deleted", { id: "sub_tools_1", status: "canceled" });
+  assert.match(await gate("/app/side-hustle-ledger.html", cookie), /^302 .*account\.html\?locked=side-hustle-ledger$/);
+});
+
+test("a full refund revokes a one-time purchase", async () => {
+  await sendEvent("checkout.session.completed", checkout("refund@example.test", "infoelev_side_income_launchpad", { payment_intent: "pi_refund_1" }));
+  const pw = passwordFrom(lastEmailTo("refund@example.test"));
+  const c = (await logIn("refund@example.test", pw)).cookie;
+  assert.equal(await gate("/app/side-income-launchpad.html", c), "pass");
+  await sendEvent("charge.refunded", { payment_intent: "pi_refund_1", refunded: true });
+  assert.match(await gate("/app/side-income-launchpad.html", c), /^302 .*locked=side-income-launchpad$/);
+});
+
+test("unpaid (async) checkouts do not grant access", async () => {
+  const r = await sendEvent("checkout.session.completed", checkout("pending@example.test", "infoelev_full_library", { payment_status: "unpaid" }));
+  assert.equal(r.body.result, "skipped: not paid yet");
+});
+
+test("admin sees every member; everyone else gets 404", async () => {
+  assert.equal((await adminUsers.GET(req("/api/admin/users", { cookie }))).status, 404);
+  const { password: ownerPw } = await grantPurchase("owner@elevpay.test", { id: "manual:owner", product: "infoelev_all_access", source: "manual", note: "Owner account" }, { sendMail: false });
+  const owner = (await logIn("owner@elevpay.test", ownerPw)).cookie;
+  assert.equal(await gate("/admin.html", owner), "pass");
+  const { users } = await (await adminUsers.GET(req("/api/admin/users", { cookie: owner }))).json();
+  const buyerRow = users.find((u) => u.email === "buyer@example.test");
+  assert.equal(buyerRow.loginCount, 1);
+  assert.deepEqual(buyerRow.purchases.map((p) => p.status), ["canceled", "canceled"]);
+  assert.equal(users.find((u) => u.email === "owner@elevpay.test").purchases[0].note, "Owner account");
+});
+
+test("changing the password logs out old sessions", async () => {
+  const fresh = (await logIn(buyer, toolsPassword)).cookie;
+  const res = await password.POST(req("/api/password", { method: "POST", cookie: fresh, body: { current: toolsPassword, next: "new-password-123" } }));
+  assert.equal(res.status, 200);
+  assert.equal((await me.GET(req("/api/me", { cookie: fresh }))).status, 401);
+  assert.equal((await logIn(buyer, "new-password-123")).status, 200);
+});
+
+test("forgot + reset password", async () => {
+  const res = await forgot.POST(req("/api/forgot", { method: "POST", body: { email: buyer } }));
+  assert.equal(res.status, 200);
+  const token = decodeURIComponent(lastEmailTo("buyer@example.test").text.match(/token=(\S+)/)[1]);
+  assert.equal((await reset.POST(req("/api/reset", { method: "POST", body: { token, password: "short" } }))).status, 400);
+  assert.equal((await reset.POST(req("/api/reset", { method: "POST", body: { token, password: "reset-password-456" } }))).status, 200);
+  assert.equal((await reset.POST(req("/api/reset", { method: "POST", body: { token, password: "another-password-789" } }))).status, 400); // single use
+  assert.equal((await logIn(buyer, "reset-password-456")).status, 200);
+  // unknown emails get the same answer and no email
+  const before = emails.length;
+  assert.equal((await forgot.POST(req("/api/forgot", { method: "POST", body: { email: "nobody@example.test" } }))).status, 200);
+  assert.equal(emails.length, before);
+});
+
+test("login is rate limited", async () => {
+  let last;
+  for (let i = 0; i < 11; i++) last = await logIn("limited@example.test", "x");
+  assert.equal(last.status, 429);
+});

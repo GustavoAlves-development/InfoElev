@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Side Income Launchpad — App | Infoelev</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="app-sidebar">
+    <div class="logo">Info<span>elev</span></div>
+    <div class="product-name">Side Income Launchpad</div>
+    <div class="app-progress-wrap">
+      <div class="app-progress-label" id="app-progress-label"><span>0 of 0 read</span><span>0%</span></div>
+      <div class="app-progress-track"><div class="app-progress-fill" id="app-progress-fill" style="width:0%"></div></div>
+    </div>
+    <nav id="app-sidebar-nav"></nav>
+    <div class="app-sidebar-footer">
+      <a href="/side-income-launchpad.html">&larr; Back to product page</a>
+      <a href="/account.html">My account</a>
+      <a href="#" data-logout>Log out</a>
+    </div>
+  </aside>
+  <main class="app-main" id="app-main-content"></main>
+</div>
+
+<script src="/assets/js/app-shell.js"></script>
+<script src="/app/content/side-income-launchpad.js"></script>
+<script>
+  const CHAPTERS = window.ELEV_CHAPTERS || [];
+
+  function renderContentSection(container, ch) {
+    container.innerHTML =
+      '<div class="app-eyebrow">' + ch.module + '</div>' +
+      '<h1 class="app-title">' + ch.heading + '</h1>' +
+      '<p class="app-dek">' + ch.dek + '</p>' +
+      '<div class="app-rule"></div>' +
+      '<div class="app-body">' + renderBlocks(ch.body) + '</div>';
+  }
+
+  function renderDebtSnapshot(container, store) {
+    let rows = store.getTool("debts", []);
+    if (!rows.length) rows = [{ name: "", balance: "", payment: "", apr: "" }];
+
+    container.innerHTML =
+      '<div class="app-eyebrow">Tool</div>' +
+      '<h1 class="app-title">Debt Snapshot</h1>' +
+      '<p class="app-dek">List every debt you carry. Totals update automatically as you go.</p>' +
+      '<div class="app-rule"></div>' +
+      '<div class="tool-card">' +
+      '<table class="tool-table"><thead><tr><th>Debt</th><th>Balance</th><th>Min. Payment</th><th>APR %</th><th></th></tr></thead>' +
+      '<tbody id="ds-rows"></tbody></table>' +
+      '<button class="btn btn-ghost btn-sm" id="ds-add">+ Add debt</button>' +
+      '<div class="tool-summary" id="ds-total"></div>' +
+      '</div>';
+
+    const tbody = document.getElementById("ds-rows");
+
+    function renderRows() {
+      tbody.innerHTML = rows.map((r, i) =>
+        '<tr>' +
+        '<td><input type="text" class="ds-name" data-i="' + i + '" value="' + r.name + '" placeholder="e.g. Credit card"></td>' +
+        '<td class="amount-col"><input type="number" class="ds-balance" data-i="' + i + '" value="' + r.balance + '" placeholder="0.00"></td>' +
+        '<td class="amount-col"><input type="number" class="ds-payment" data-i="' + i + '" value="' + r.payment + '" placeholder="0.00"></td>' +
+        '<td class="amount-col"><input type="number" class="ds-apr" data-i="' + i + '" value="' + r.apr + '" placeholder="0"></td>' +
+        '<td><button class="tool-remove-btn" data-i="' + i + '">&times;</button></td>' +
+        '</tr>'
+      ).join("");
+      tbody.querySelectorAll(".ds-name").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].name = el.value; persist(); }));
+      tbody.querySelectorAll(".ds-balance").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].balance = el.value; persist(); recalc(); }));
+      tbody.querySelectorAll(".ds-payment").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].payment = el.value; persist(); recalc(); }));
+      tbody.querySelectorAll(".ds-apr").forEach((el) => el.addEventListener("input", () => { rows[+el.dataset.i].apr = el.value; persist(); }));
+      tbody.querySelectorAll(".tool-remove-btn").forEach((el) => el.addEventListener("click", () => {
+        rows.splice(+el.dataset.i, 1);
+        if (!rows.length) rows.push({ name: "", balance: "", payment: "", apr: "" });
+        persist(); renderRows(); recalc();
+      }));
+    }
+
+    function recalc() {
+      const totalBalance = rows.reduce((s, r) => s + (parseFloat(r.balance) || 0), 0);
+      const totalPayment = rows.reduce((s, r) => s + (parseFloat(r.payment) || 0), 0);
+      document.getElementById("ds-total").innerHTML =
+        "<span>" + formatCurrency(totalBalance) + " total balance</span><span>" + formatCurrency(totalPayment) + "/month in minimums</span>";
+    }
+
+    function persist() { store.setTool("debts", rows); }
+
+    document.getElementById("ds-add").addEventListener("click", () => {
+      rows.push({ name: "", balance: "", payment: "", apr: "" });
+      persist(); renderRows(); recalc();
+    });
+
+    renderRows();
+    recalc();
+  }
+
+  const ROADMAP_ITEMS = buildRoadmapItems(CHAPTERS);
+
+  const sections = CHAPTERS.map((ch) => ({ id: ch.id, group: "content", label: ch.label, render: (c) => renderContentSection(c, ch) }));
+  sections.push({ id: "tool-debts", group: "tools", label: "Debt Snapshot", render: renderDebtSnapshot });
+  if (CHAPTERS.length) sections.push({ id: "tool-roadmap", group: "tools", label: "Action Roadmap", render: (c, store) => renderRoadmap(c, store, ROADMAP_ITEMS) });
+
+  initAppShell({ productId: "side-income-launchpad", sections: sections, locked: !CHAPTERS.length });
+</script>
+</body>
+</html>
