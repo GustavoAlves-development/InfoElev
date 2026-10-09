@@ -141,8 +141,12 @@
     document.getElementById("account-email").textContent = me.email;
     document.getElementById("admin-link").hidden = !me.admin;
     const owned = me.apps.filter((a) => a.level);
-    document.getElementById("account-apps").innerHTML = owned.length
-      ? owned.map((a) => '<a class="account-app" href="/app/' + a.id + '.html"><span class="account-app-name">' + ElevMember.esc(a.name) + '</span><span class="account-app-level">' + (a.level === "full" ? "Course + tools" : "Tools") + '</span><span class="account-app-open">Open &rarr;</span></a>').join("")
+    const unused = Object.values(me.sprints.credits).reduce((t, n) => t + n, 0);
+    const sprints = unused || me.sprints.started
+      ? '<a class="account-app" href="/app/sprints.html"><span class="account-app-name">Side Hustle Sprints</span><span class="account-app-level">' + unused + " unused · " + me.sprints.started + ' started</span><span class="account-app-open">Open &rarr;</span></a>'
+      : "";
+    document.getElementById("account-apps").innerHTML = owned.length || sprints
+      ? sprints + owned.map((a) => '<a class="account-app" href="/app/' + a.id + '.html"><span class="account-app-name">' + ElevMember.esc(a.name) + '</span><span class="account-app-level">' + (a.level === "full" ? "Course + tools" : "Tools") + '</span><span class="account-app-open">Open &rarr;</span></a>').join("")
       : '<p class="muted">You don\'t have any active products yet. <a href="/#products">Browse the library</a>.</p>';
     document.getElementById("account-purchases").innerHTML = me.purchases.length
       ? '<table class="data-table"><thead><tr><th>Product</th><th>Date</th><th>Status</th></tr></thead><tbody>' +

@@ -140,11 +140,11 @@ button { font-family: "Inter", sans-serif; cursor: pointer; }
 
 .tool-field { margin-bottom: 18px; }
 .tool-field label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
-.tool-field input {
+.tool-field input, .tool-field select {
   width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);
   background: var(--surface); font-family: inherit; font-size: 0.95rem; color: var(--text);
 }
-.tool-field input:focus { outline: none; border-color: var(--accent); }
+.tool-field input:focus, .tool-field select:focus { outline: none; border-color: var(--accent); }
 
 .checklist-item { display: flex; align-items: flex-start; gap: 16px; padding: 15px 8px; border-bottom: 1px solid var(--line); }
 .checklist-item input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }

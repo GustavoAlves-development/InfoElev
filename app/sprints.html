@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Side Hustle Sprints — App | Infoelev</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/app.css">
+<style>
+  .sprint-buy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .sprint-buy { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 22px; }
+  .sprint-buy strong { display: block; font-family: "Space Grotesk", sans-serif; font-size: 1.25rem; color: var(--ink); }
+  .sprint-buy .muted { color: var(--text-muted); font-size: 0.88rem; margin: 4px 0 14px; }
+  .sprint-day { display: grid; grid-template-columns: 34px 1fr; gap: 6px 14px; padding: 16px 4px; border-bottom: 1px solid var(--line); }
+  .sprint-day.is-future { opacity: 0.45; }
+  .sprint-day.is-today { background: var(--surface); border-radius: var(--radius-sm); padding: 16px 12px; }
+  .sprint-day-inputs { grid-column: 2; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 8px; }
+  .sprint-day-inputs label { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; }
+  .sprint-day-inputs input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+  .sprint-day-inputs input[type="number"], .sprint-day-inputs input[type="text"] { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font: inherit; font-size: 0.9rem; background: var(--paper); }
+  .sprint-day-inputs input[type="number"] { width: 120px; }
+  .sprint-day-inputs input[type="text"] { flex: 1; min-width: 180px; }
+  .sprint-msg { min-height: 1.2em; font-weight: 600; color: var(--danger); margin-top: 10px; }
+  @media (max-width: 700px) { .sprint-buy-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="app-sidebar">
+    <div class="logo">Info<span>elev</span></div>
+    <div class="product-name">Side Hustle Sprints</div>
+    <nav id="sprint-nav"></nav>
+    <div class="app-sidebar-footer">
+      <a href="/sprints.html">&larr; About sprints</a>
+      <a href="/account.html">My account</a>
+      <a href="#" data-logout>Log out</a>
+    </div>
+  </aside>
+  <main class="app-main" id="sprint-main"><p>Loading…</p></main>
+</div>
+
+<script src="/assets/js/member.js"></script>
+<script>
+  const esc = ElevMember.esc;
+  const PRICES = { 7: 6, 30: 15, 90: 28 };
+  // One focus per weekday, repeated across the sprint; the last day is always the review.
+  const WEEK = [
+    ["Plan the week", "Pick the three actions that would move your sprint goal the most this week."],
+    ["Build", "Use today's session to create or improve your offer, profile, listing, or product."],
+    ["Reach out", "Contact at least five potential buyers or clients, or apply to five gigs."],
+    ["Deliver", "Finish and deliver work, or ship one improvement buyers can see."],
+    ["Follow up", "Reply to and follow up on every open conversation from this week."],
+    ["Improve", "Ask for feedback or a review, and fix one thing it points to."],
+    ["Weekly review", "Log this week's results and decide what to repeat next week."],
+  ];
+  const focus = (s, day) => (day === s.days ? ["Sprint review", "Compare your results with your goal, note what worked, and decide on your next sprint."] : WEEK[(day - 1) % 7]);
+
+  const DAY_MS = 864e5;
+  const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const today = (s) => Math.min(s.days, Math.floor((startOfDay(new Date()) - startOfDay(new Date(s.startedAt))) / DAY_MS) + 1);
+  const money = (n) => "$" + Number(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const stats = (s) => {
+    const list = Object.values(s.checkins);
+    return { done: list.filter((c) => c.done).length, earned: list.reduce((t, c) => t + (c.amount || 0), 0) };
+  };
+
+  let state = { credits: {}, sprints: [] };
+  let current = location.hash.slice(1) || "start";
+
+  function renderNav() {
+    const items = [{ id: "start", label: "Start a sprint" }].concat(
+      state.sprints.slice().reverse().map((s) => ({ id: s.id, label: s.days + "-day · " + s.goal, done: today(s) >= s.days }))
+    );
+    document.getElementById("sprint-nav").innerHTML =
+      '<div class="app-nav-group-label">Sprints</div>' +
+      items.map((i) =>
+        '<a class="app-nav-item' + (i.id === current ? " active" : "") + (i.done ? " done" : "") + '" href="#' + i.id + '">' +
+        '<span class="app-nav-check">&#10003;</span><span>' + esc(i.label) + "</span></a>"
+      ).join("");
+  }
+
+  function renderStart(main) {
+    const available = [7, 30, 90].filter((d) => state.credits[d] > 0);
+    main.innerHTML =
+      '<div class="app-eyebrow">Side Hustle Sprints</div>' +
+      '<h1 class="app-title">Start a sprint</h1>' +
+      '<p class="app-dek">A sprint is a fixed window with one goal and a daily check-in. Each purchase is one sprint — when it ends, start another to keep your momentum.</p>' +
+      '<div class="app-rule"></div>' +
+      '<div class="sprint-buy-grid">' +
+      [7, 30, 90].map((d) =>
+        '<div class="sprint-buy"><strong>' + d + '-day sprint</strong>' +
+        '<p class="muted">' + (state.credits[d] || 0) + " unused</p>" +
+        '<a class="btn ' + (state.credits[d] ? "btn-ghost" : "btn-primary") + ' btn-sm" href="/api/checkout?product=infoelev_sprint_' + d + '">Buy one — $' + PRICES[d] + "</a></div>"
+      ).join("") +
+      "</div>" +
+      (available.length
+        ? '<div class="tool-card"><form id="start-form">' +
+          '<div class="tool-field"><label for="sf-days">Sprint length</label><select id="sf-days">' +
+          available.map((d) => '<option value="' + d + '">' + d + " days (" + state.credits[d] + " unused)</option>").join("") + "</select></div>" +
+          '<div class="tool-field"><label for="sf-goal">Your goal for this sprint</label><input type="text" id="sf-goal" maxlength="200" placeholder="e.g. Land my first 3 paid gigs"></div>' +
+          '<div class="tool-field"><label for="sf-target">Income target for this sprint (optional, $)</label><input type="number" id="sf-target" min="0" step="1" placeholder="0"></div>' +
+          '<button class="btn btn-primary" type="submit">Start sprint</button><p class="sprint-msg" id="sf-msg"></p></form></div>'
+        : '<p class="app-dek">You have no unused sprints. Buy one above — it appears here right after payment.</p>');
+
+    const form = document.getElementById("start-form");
+    if (!form) return;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector("button");
+      btn.disabled = true;
+      try {
+        state = await ElevMember.api("/api/sprints", {
+          action: "start",
+          days: +document.getElementById("sf-days").value,
+          goal: document.getElementById("sf-goal").value,
+          target: document.getElementById("sf-target").value,
+        });
+        location.hash = state.sprints[state.sprints.length - 1].id;
+      } catch (err) {
+        document.getElementById("sf-msg").textContent = err.message;
+        btn.disabled = false;
+      }
+    });
+  }
+
+  function renderSprint(main, s) {
+    const now = today(s);
+    const st = stats(s);
+    main.innerHTML =
+      '<div class="app-eyebrow">' + s.days + "-day sprint · started " + ElevMember.date(s.startedAt) + "</div>" +
+      '<h1 class="app-title">' + esc(s.goal) + "</h1>" +
+      '<p class="app-dek">' + (now >= s.days ? "Final day — review your results and plan your next sprint." : "Day " + now + " of " + s.days + ". Check in every day, even when the day was small.") + "</p>" +
+      '<div class="app-rule"></div>' +
+      '<div class="tool-card"><div class="tool-summary balanced" id="sp-summary" style="margin:0;padding:0;border:0"></div></div>' +
+      '<div class="tool-card" style="padding:6px 24px">' +
+      Array.from({ length: s.days }, (_, i) => i + 1).map((day) => {
+        const c = s.checkins[day] || {};
+        const [title, desc] = focus(s, day);
+        const future = day > now;
+        return '<div class="sprint-day' + (future ? " is-future" : "") + (day === now ? " is-today" : "") + '" data-day="' + day + '">' +
+          '<span class="day-num" style="font-weight:700;color:var(--accent)">' + String(day).padStart(2, "0") + "</span>" +
+          '<span><span class="day-title">' + title + '</span><div class="day-desc">' + desc + "</div></span>" +
+          (future ? "" :
+            '<div class="sprint-day-inputs">' +
+            '<label><input type="checkbox" class="sd-done"' + (c.done ? " checked" : "") + "> Done</label>" +
+            '<input type="number" class="sd-amount" min="0" step="0.01" placeholder="$ earned" value="' + (c.amount ? c.amount : "") + '">' +
+            '<input type="text" class="sd-note" maxlength="500" placeholder="Note (optional)" value="' + esc(c.note || "") + '">' +
+            "</div>") +
+          "</div>";
+      }).join("") +
+      '<p class="sprint-msg" id="sp-msg"></p></div>';
+
+    function summary() {
+      const t = stats(s);
+      document.getElementById("sp-summary").innerHTML =
+        "<span>" + t.done + " of " + s.days + " days done</span><span>" + money(t.earned) + " earned" + (s.target ? " of " + money(s.target) + " target" : "") + "</span>";
+    }
+    summary();
+
+    main.querySelectorAll(".sprint-day[data-day]").forEach((row) => {
+      const inputs = row.querySelector(".sprint-day-inputs");
+      if (!inputs) return;
+      let timer;
+      const save = () => {
+        clearTimeout(timer);
+        timer = setTimeout(async () => {
+          const day = +row.dataset.day;
+          const payload = { action: "checkin", id: s.id, day, done: row.querySelector(".sd-done").checked, amount: row.querySelector(".sd-amount").value, note: row.querySelector(".sd-note").value };
+          try {
+            state = await ElevMember.api("/api/sprints", payload);
+            s.checkins = state.sprints.find((x) => x.id === s.id).checkins;
+            summary();
+            document.getElementById("sp-msg").textContent = "";
+          } catch (err) {
+            document.getElementById("sp-msg").textContent = err.message;
+          }
+        }, 500);
+      };
+      inputs.addEventListener("input", save);
+      inputs.addEventListener("change", save);
+    });
+  }
+
+  function render() {
+    current = location.hash.slice(1) || "start";
+    const sprint = state.sprints.find((s) => s.id === current);
+    if (!sprint) current = "start";
+    renderNav();
+    const main = document.getElementById("sprint-main");
+    sprint ? renderSprint(main, sprint) : renderStart(main);
+    window.scrollTo(0, 0);
+  }
+
+  window.addEventListener("hashchange", render);
+  ElevMember.api("/api/sprints")
+    .then((data) => { state = data; render(); })
+    .catch(() => { location.href = "/login.html?next=/app/sprints.html"; });
+</script>
+</body>
+</html>

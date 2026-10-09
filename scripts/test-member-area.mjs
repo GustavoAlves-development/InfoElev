@@ -19,6 +19,7 @@ const password = await import("../api/password.js");
 const forgot = await import("../api/forgot.js");
 const reset = await import("../api/reset.js");
 const adminUsers = await import("../api/admin/users.js");
+const sprints = await import("../api/sprints.js");
 const { signWebhook } = await import("../api/_lib/stripe.js");
 const { grantPurchase } = await import("../api/_lib/fulfillment.js");
 
@@ -177,4 +178,45 @@ test("login is rate limited", async () => {
   let last;
   for (let i = 0; i < 11; i++) last = await logIn("limited@example.test", "x");
   assert.equal(last.status, 429);
+});
+
+test("sprints: each purchase is one credit, used up when a sprint starts", async () => {
+  const who = "sprinter@example.test";
+  await sendEvent("checkout.session.completed", checkout(who, "infoelev_sprint_7", { payment_intent: "pi_spr_1" }));
+  const r2 = await sendEvent("checkout.session.completed", checkout(who, "infoelev_sprint_7", { payment_intent: "pi_spr_2" }));
+  assert.equal(r2.body.result, "product added");
+  const c = (await logIn(who, passwordFrom(emails.find((e) => e.to === who)))).cookie;
+  assert.equal(await gate("/app/sprints.html", c), "pass");
+  assert.equal(await gate("/app/side-income-launchpad.html", c).then((g) => g.startsWith("302")), true);
+
+  const post = async (body) => sprints.POST(req("/api/sprints", { method: "POST", body, cookie: c }));
+  let data = await (await sprints.GET(req("/api/sprints", { cookie: c }))).json();
+  assert.deepEqual(data.credits, { 7: 2, 30: 0, 90: 0 });
+
+  assert.equal((await post({ action: "start", days: 30, goal: "x" })).status, 402);
+  assert.equal((await post({ action: "start", days: 7, goal: "" })).status, 400);
+  data = await (await post({ action: "start", days: 7, goal: "First 3 gigs", target: "150" })).json();
+  assert.equal(data.credits[7], 1);
+  const s = data.sprints[0];
+  assert.equal(s.target, 150);
+
+  data = await (await post({ action: "checkin", id: s.id, day: 1, done: true, amount: "40.5", note: "<b>hi</b>" })).json();
+  assert.deepEqual({ ...data.sprints[0].checkins[1], at: undefined }, { done: true, amount: 40.5, note: "<b>hi</b>", at: undefined });
+  assert.equal((await post({ action: "checkin", id: s.id, day: 5, done: true })).status, 400); // not open yet
+  assert.equal((await post({ action: "checkin", id: s.id, day: 8, done: true })).status, 400); // past the end
+
+  // Another member can't touch this sprint.
+  const other = (await logIn("refund@example.test", passwordFrom(lastEmailTo("refund@example.test")))).cookie;
+  const foreign = await sprints.POST(req("/api/sprints", { method: "POST", body: { action: "checkin", id: s.id, day: 1, done: false }, cookie: other }));
+  assert.equal(foreign.status, 404);
+
+  // Refunding one purchase removes the unused credit; the started sprint stays.
+  await sendEvent("charge.refunded", { payment_intent: "pi_spr_2", refunded: true });
+  data = await (await sprints.GET(req("/api/sprints", { cookie: c }))).json();
+  assert.equal(data.credits[7], 0);
+  assert.equal(data.sprints.length, 1);
+  const meData = await (await me.GET(req("/api/me", { cookie: c }))).json();
+  assert.deepEqual(meData.sprints, { credits: { 7: 0, 30: 0, 90: 0 }, started: 1 });
+
+  assert.equal((await sprints.GET(req("/api/sprints"))).status, 401);
 });

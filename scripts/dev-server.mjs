@@ -19,7 +19,8 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const DEV_ACCOUNTS = [
   { email: "admin@example.com", password: "dev-admin-pass", product: "infoelev_all_access", note: "Local admin" },
   { email: "tools@example.com", password: "dev-tools-pass", product: "infoelev_tools", note: "Local Tools member" },
-  { email: "ledger@example.com", password: "dev-ledger-pass", product: "infoelev_side_hustle_ledger_complete", note: "Local one-time buyer" },
+  { email: "buyer@example.com", password: "dev-buyer-pass", product: "infoelev_side_income_launchpad", note: "Local one-time buyer" },
+  { email: "sprint@example.com", password: "dev-sprint-pass", product: "infoelev_sprint_7", note: "Local sprint buyer" },
 ];
 if (process.env.INFOELEV_MEMORY_DB === "1") {
   const { grantPurchase } = await import(pathToFileURL(join(root, "api/_lib/fulfillment.js")).href);

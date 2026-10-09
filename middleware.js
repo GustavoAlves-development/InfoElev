@@ -1,6 +1,7 @@
 // Vercel Routing Middleware: protects the member area before any static file is served.
 //   /app/<app>.html          → logged in + any access to that app ("tools" or "full")
 //   /app/content/<app>.js    → logged in + "full" access (course chapters)
+//   /app/sprints.html        → logged in (credits are checked by /api/sprints)
 //   /account.html            → logged in
 //   /admin.html              → logged in + email listed in ADMIN_EMAILS
 // Returning nothing lets the request continue to the static file.
@@ -31,7 +32,7 @@ export default async function middleware(request) {
 
   if (url.pathname === "/admin.html" && !isAdmin(user.email)) return Response.redirect(new URL("/account.html", url), 302);
 
-  if (url.pathname.startsWith("/app/")) {
+  if (url.pathname.startsWith("/app/") && url.pathname !== "/app/sprints.html") {
     const app = url.pathname.slice("/app/".length).replace(/\.html$/, "");
     if (!accessOf(user)[app]) return Response.redirect(new URL("/account.html?locked=" + encodeURIComponent(app), url), 302);
   }

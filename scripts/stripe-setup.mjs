@@ -40,12 +40,16 @@ const CATALOG = [
     description: "A practical guide to online gigs: the main gig categories, how to compare platforms, a profile checklist and how to track real net hourly pay. Includes 5 modules, the Gig Earnings Tracker tool and email support. One-time payment, lifetime access.",
   },
   {
-    id: "infoelev_side_hustle_ledger_complete", name: "The Side Hustle Ledger — Complete", amount: 1500, cover: "hustle",
-    description: "A simple system to track side-hustle income and costs, plan tax set-asides and review results monthly. Includes 5 modules, the Side Hustle Ledger tool, the monthly review guide and email support. One-time payment, lifetime access.",
+    id: "infoelev_sprint_7", name: "7-Day Side Hustle Sprint", amount: 600, cover: "sprint7",
+    description: "A 7-day Side Hustle Sprint: one goal, a daily focus prompt and a daily check-in in the Infoelev member app, with a progress and earnings summary. Each purchase adds one sprint to your account, to start whenever you choose. One-time payment per sprint.",
   },
   {
-    id: "infoelev_side_hustle_ledger_elevated", name: "The Side Hustle Ledger — Elevated", amount: 2800, cover: "hustle",
-    description: "Everything in The Side Hustle Ledger Complete (5 modules, ledger tool and monthly review guide), plus priority email support and all future updates. One-time payment, lifetime access.",
+    id: "infoelev_sprint_30", name: "30-Day Side Hustle Sprint", amount: 1500, cover: "sprint30",
+    description: "A 30-day Side Hustle Sprint: one goal, a weekly rhythm of daily focus prompts and a daily check-in in the Infoelev member app, with a progress and earnings summary. Each purchase adds one sprint to your account, to start whenever you choose. One-time payment per sprint.",
+  },
+  {
+    id: "infoelev_sprint_90", name: "90-Day Side Hustle Sprint", amount: 2800, cover: "sprint90",
+    description: "A 90-day Side Hustle Sprint: one goal, 13 weekly cycles of daily focus prompts and a daily check-in in the Infoelev member app, with a progress and earnings summary. Each purchase adds one sprint to your account, to start whenever you choose. One-time payment per sprint.",
   },
   {
     id: "infoelev_full_library", name: "The Full Infoelev Library", amount: 9000, cover: "library",

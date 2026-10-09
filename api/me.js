@@ -1,5 +1,5 @@
 import { currentUser, json } from "./_lib/http.js";
-import { APPS, PRODUCTS, accessOf } from "./_lib/catalog.js";
+import { APPS, PRODUCTS, accessOf, sprintCredits } from "./_lib/catalog.js";
 import { isAdmin } from "./_lib/users.js";
 
 export async function GET(request) {
@@ -9,6 +9,7 @@ export async function GET(request) {
   return json({
     email: user.email,
     admin: isAdmin(user.email),
+    sprints: { credits: sprintCredits(user), started: (user.sprints || []).length },
     apps: Object.entries(APPS).map(([id, name]) => ({ id, name, level: access[id] || null })),
     purchases: user.purchases.map((p) => ({
       product: PRODUCTS[p.product]?.name || p.product,
