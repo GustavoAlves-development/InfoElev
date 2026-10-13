@@ -7,3 +7,5 @@ node_modules/
 .env*
 .agents/
 skills-lock.json
+docs/stripe/.chrome-profile/
+docs/stripe/.*.html

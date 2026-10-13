@@ -1,0 +1,311 @@
+<!doctype html>
+<!-- Stripe compliance dossier. Render to PDF with: node docs/stripe/build.mjs -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Infoelev Digital Business LLC — Stripe Compliance Dossier</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: Letter; margin: 0.6in 0.65in 0.75in;
+    @bottom-left { content: "Infoelev Digital Business LLC · EIN [EIN] · infoelev.com"; font-family: Inter, Arial, sans-serif; font-size: 7.5pt; color: #6b7a74; }
+    @bottom-right { content: "Page " counter(page) " of " counter(pages); font-family: Inter, Arial, sans-serif; font-size: 7.5pt; color: #6b7a74; }
+  }
+  @page :first { @bottom-left { content: none; } @bottom-right { content: none; } }
+  :root { --ink: #111816; --text: #1f2724; --muted: #6b7a74; --accent: #0f8a5f; --accent-light: #22b07d; --pale: #c9ecdc; --surface: #f3f6f4; --line: #d5e2db; }
+  * { box-sizing: border-box; }
+  body { font-family: "Inter", Arial, sans-serif; color: var(--text); font-size: 10pt; line-height: 1.5; margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h1, h2, h3 { font-family: "Space Grotesk", Arial, sans-serif; color: var(--ink); font-weight: 600; line-height: 1.15; }
+  h2 { font-size: 17pt; margin: 0 0 10px; padding-top: 4px; }
+  h2 .n { color: var(--accent); margin-right: 8px; }
+  h3 { font-size: 12pt; margin: 18px 0 6px; }
+  p { margin: 0 0 9px; }
+  a { color: var(--accent); text-decoration: underline; }
+  .muted { color: var(--muted); }
+  section { page-break-before: always; }
+  section.flow { page-break-before: auto; margin-top: 26px; }
+
+  .cover { height: 9.3in; display: flex; flex-direction: column; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: "Space Grotesk", sans-serif; font-size: 20pt; font-weight: 600; color: var(--ink); }
+  .brand svg { width: 34px; height: 34px; }
+  .brand span { color: var(--accent); }
+  .cover h1 { font-size: 32pt; margin: 0 0 12px; }
+  .kicker { font-size: 8.5pt; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+  .cover .lead { font-size: 12pt; color: var(--muted); max-width: 5.8in; }
+  .cover-products { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 30px; }
+  .cover-products img { width: 100%; border-radius: 6px; display: block; }
+  .facts { display: grid; grid-template-columns: 1.35in 1fr; gap: 5px 16px; font-size: 9.5pt; border-top: 1px solid var(--line); padding-top: 16px; margin: 0; }
+  .facts dt { color: var(--muted); }
+  .facts dd { margin: 0; font-weight: 600; }
+
+  .toc { list-style: none; padding: 0; margin: 14px 0 0; }
+  .toc li { display: flex; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 11pt; }
+  .toc .n { color: var(--accent); font-family: "Space Grotesk", sans-serif; font-weight: 700; width: 26px; }
+  .toc a { color: var(--ink); text-decoration: none; font-weight: 600; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0 16px; }
+  .stat { background: var(--surface); border-radius: 8px; padding: 12px 14px; }
+  .stat strong { display: block; font-family: "Space Grotesk", sans-serif; font-size: 22pt; color: var(--ink); line-height: 1.1; }
+  .stat span { font-size: 8.5pt; color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; margin: 8px 0 14px; }
+  th { text-align: left; font-size: 7.3pt; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border-bottom: 1.5px solid var(--ink); padding: 6px 8px 6px 0; }
+  td { border-bottom: 1px solid var(--line); padding: 7px 8px 7px 0; vertical-align: top; }
+  td strong { color: var(--ink); }
+
+  .callout { background: var(--surface); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 10px 0 14px; border-radius: 0 6px 6px 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  ol.steps { padding-left: 18px; margin: 6px 0 12px; }
+  ol.steps li { margin-bottom: 5px; }
+  ul { padding-left: 18px; margin: 4px 0 10px; }
+  li { margin-bottom: 3px; }
+
+  figure { margin: 8px 0 12px; break-inside: avoid; }
+  figure img { width: 100%; border: 1px solid var(--line); border-radius: 6px; display: block; }
+  figure .missing { border: 1.5px dashed var(--accent); border-radius: 6px; background: var(--surface); color: var(--muted); font-size: 9pt; padding: 38px 16px; text-align: center; }
+  figcaption { font-size: 8.3pt; color: var(--muted); margin-top: 5px; }
+  .shot-sm img, .shot-sm .missing { max-height: 3.1in; object-fit: cover; object-position: top; }
+  .flow-diagram svg { width: 100%; height: auto; display: block; }
+  .email-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+  .email-grid .shot-sm img { max-height: 2.6in; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="brand">
+    <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#111816"/><path d="M22 70 L42 50 L54 60 L74 38" fill="none" stroke="#22B07D" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M58 36 H76 V54" fill="none" stroke="#C9ECDC" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>Info<span>elev</span></div>
+  </div>
+  <div>
+    <div class="kicker">Prepared for Stripe Risk &amp; Compliance</div>
+    <h1>Business &amp; Product Dossier</h1>
+    <p class="lead">A product-by-product view of what Infoelev sells, how customers pay and receive access, and how we handle support, refunds, and cancellations. All images are real captures of the website and member area.</p>
+    <div class="cover-products">
+      <img src="../../assets/img/products/launchpad.png" alt="Side Income Launchpad">
+      <img src="../../assets/img/products/academy.png" alt="Digital Product Academy">
+      <img src="../../assets/img/products/freelance.png" alt="The Freelance Starter Kit">
+      <img src="../../assets/img/products/gigs.png" alt="Online Gig Playbook">
+      <img src="../../assets/img/products/flip.png" alt="The Flip Playbook">
+      <img src="../../assets/img/products/sprint30.png" alt="Side Hustle Sprints">
+    </div>
+  </div>
+  <dl class="facts">
+    <dt>Legal entity</dt><dd>Infoelev Digital Business LLC — Wyoming limited liability company</dd>
+    <dt>EIN</dt><dd>[EIN]</dd>
+    <dt>Stripe account</dt><dd>[ACCOUNT ID]</dd>
+    <dt>Principal office</dt><dd>8200 NW 41st Street, 2nd Floor, Doral, FL 33166, United States</dd>
+    <dt>Website</dt><dd><a href="https://infoelev.com">https://infoelev.com</a></dd>
+    <dt>Support</dt><dd><a href="mailto:support@infoelev.com">support@infoelev.com</a></dd>
+    <dt>Industry</dt><dd>Online education — digital courses and tools about building extra income</dd>
+    <dt>Prepared</dt><dd id="prepared-date"></dd>
+  </dl>
+</div>
+
+<section>
+  <div class="kicker">Contents</div>
+  <h2>What this document covers</h2>
+  <ol class="toc">
+    <li><span class="n">01</span><a href="#s1">Executive summary</a></li>
+    <li><span class="n">02</span><a href="#s2">Company and public pages</a></li>
+    <li><span class="n">03</span><a href="#s3">Product catalog and delivery map</a></li>
+    <li><span class="n">04</span><a href="#s4">Repeat purchases and memberships</a></li>
+    <li><span class="n">05</span><a href="#s5">Purchase and delivery flow</a></li>
+    <li><span class="n">06</span><a href="#s6">Member area and access control</a></li>
+    <li><span class="n">07</span><a href="#s7">Internal admin panel</a></li>
+    <li><span class="n">08</span><a href="#s8">Support, refunds and cancellations</a></li>
+    <li><span class="n">09</span><a href="#s9">Notes for the reviewer</a></li>
+    <li><span class="n">10</span><a href="#s10">Reviewer access</a></li>
+  </ol>
+  <p class="muted" style="margin-top:14px">Underlined text links to the live website, policy page, or email address it refers to.</p>
+</section>
+
+<section id="s1">
+  <h2><span class="n">01</span>Executive summary</h2>
+  <p>Infoelev Digital Business LLC creates and sells its own educational digital products about building extra income: six self-paced courses, each with an interactive tool inside a private member area, plus Side Hustle Sprints, a goal and check-in program bought one sprint at a time. Everything is delivered online and instantly; there is no physical fulfillment.</p>
+  <div class="stats">
+    <div class="stat"><strong>12</strong><span>Prices in Stripe, one per product or tier</span></div>
+    <div class="stat"><strong>10</strong><span>One-time prices, $6 to $90</span></div>
+    <div class="stat"><strong>2</strong><span>Monthly memberships, $9 and $19</span></div>
+    <div class="stat"><strong>USD</strong><span>Single currency</span></div>
+  </div>
+  <table>
+    <tr><th style="width:1.7in">Topic</th><th>Summary</th></tr>
+    <tr><td><strong>Business model</strong></td><td>Own digital products, sold one-time (lifetime access), per sprint, or as a monthly membership.</td></tr>
+    <tr><td><strong>Delivery</strong></td><td>Automatic and immediate: the member account and login are created and emailed as soon as Stripe confirms the payment.</td></tr>
+    <tr><td><strong>Customer protection</strong></td><td>7-day money-back guarantee, cancel-anytime memberships, public Terms, Privacy and Refund policies, support email on every page and email.</td></tr>
+    <tr><td><strong>Content</strong></td><td>Educational only. No financial, tax, or investment advice; no income guarantees; no third-party, resale-rights, or MLM products.</td></tr>
+    <tr><td><strong>Operating status</strong></td><td>New operation. We have not processed customer payments yet; this dossier shows the live structure customers will use.</td></tr>
+  </table>
+</section>
+
+<section id="s2">
+  <h2><span class="n">02</span>Company and public pages</h2>
+  <table>
+    <tr><th style="width:1.7in">Page</th><th>URL</th></tr>
+    <tr><td><strong>Home &amp; products</strong></td><td><a href="https://infoelev.com">https://infoelev.com</a></td></tr>
+    <tr><td><strong>Terms of Use</strong></td><td><a href="https://infoelev.com/terms.html">https://infoelev.com/terms.html</a></td></tr>
+    <tr><td><strong>Privacy Policy</strong></td><td><a href="https://infoelev.com/privacy.html">https://infoelev.com/privacy.html</a></td></tr>
+    <tr><td><strong>Refund Policy</strong></td><td><a href="https://infoelev.com/refund.html">https://infoelev.com/refund.html</a></td></tr>
+    <tr><td><strong>Contact</strong></td><td><a href="https://infoelev.com/contact.html">https://infoelev.com/contact.html</a></td></tr>
+    <tr><td><strong>Member login</strong></td><td><a href="https://infoelev.com/login.html">https://infoelev.com/login.html</a></td></tr>
+  </table>
+  <figure><img src="shots/home.png" alt="Home page"><figcaption>Home page — https://infoelev.com</figcaption></figure>
+</section>
+
+<section id="s3">
+  <h2><span class="n">03</span>Product catalog and delivery map</h2>
+  <p>Every product has its own public sales page with its contents, price, refund guarantee, and an educational disclaimer. Each Stripe product has exactly one price, so the checkout always shows the exact product and tier purchased.</p>
+  <table>
+    <tr><th>Product</th><th>Price</th><th>What the customer gets</th><th>Sales page</th><th>Delivered at</th></tr>
+    <tr><td><strong>Side Income Launchpad</strong><br><span class="muted">30-day program</span></td><td>$29 one-time</td><td>5 chapters, Idea Scorecard, Action Roadmap</td><td><a href="https://infoelev.com/side-income-launchpad.html">/side-income-launchpad</a></td><td>/app/side-income-launchpad</td></tr>
+    <tr><td><strong>Digital Product Academy</strong><br><span class="muted">Course</span></td><td>$54 one-time</td><td>5 modules, Product Revenue Planner, Action Roadmap</td><td><a href="https://infoelev.com/digital-product-academy.html">/digital-product-academy</a></td><td>/app/digital-product-academy</td></tr>
+    <tr><td><strong>The Freelance Starter Kit</strong><br><span class="muted">Course</span></td><td>$12 Starter<br>$22 Complete</td><td>5 modules, Freelance Rate Calculator; Complete adds email support and future updates</td><td><a href="https://infoelev.com/freelance-starter-kit.html">/freelance-starter-kit</a></td><td>/app/freelance-starter-kit</td></tr>
+    <tr><td><strong>Online Gig Playbook</strong><br><span class="muted">Course</span></td><td>$17 one-time</td><td>5 modules, Gig Earnings Tracker</td><td><a href="https://infoelev.com/online-gig-playbook.html">/online-gig-playbook</a></td><td>/app/online-gig-playbook</td></tr>
+    <tr><td><strong>The Flip Playbook</strong><br><span class="muted">Course</span></td><td>$19 one-time</td><td>5 modules, Flip Profit Calculator</td><td><a href="https://infoelev.com/flip-playbook.html">/flip-playbook</a></td><td>/app/flip-playbook</td></tr>
+    <tr><td><strong>Full Infoelev Library</strong></td><td>$90 one-time</td><td>All six programs, including The Side Hustle Ledger</td><td><a href="https://infoelev.com/library.html">/library</a></td><td>All /app pages</td></tr>
+    <tr><td><strong>Side Hustle Sprints</strong><br><span class="muted">7 / 30 / 90 days</span></td><td>$6 / $15 / $28 per sprint</td><td>One sprint per purchase: goal, daily focus, daily check-in, results summary</td><td><a href="https://infoelev.com/sprints.html">/sprints</a></td><td>/app/sprints</td></tr>
+    <tr><td><strong>Infoelev Tools</strong></td><td>$9 / month</td><td>All six interactive tools, without course chapters</td><td><a href="https://infoelev.com/library.html#pricing">/library#pricing</a></td><td>All /app pages (tools)</td></tr>
+    <tr><td><strong>Infoelev All Access</strong></td><td>$19 / month</td><td>All courses and tools, plus new products as released</td><td><a href="https://infoelev.com/library.html#pricing">/library#pricing</a></td><td>All /app pages</td></tr>
+  </table>
+  <p class="muted">The Side Hustle Ledger course is not sold on its own; it is included in the Library and both memberships. The $19 one-time product (The Flip Playbook) and the $19/month membership (All Access) are separate Stripe products.</p>
+  <div class="grid2">
+    <figure class="shot-sm"><img src="shots/product-page.png" alt="Product page"><figcaption>Sales page — Side Income Launchpad</figcaption></figure>
+    <figure class="shot-sm"><img src="shots/pricing.png" alt="Pricing"><figcaption>Library pricing: one-time bundle and monthly memberships</figcaption></figure>
+  </div>
+  <figure><div class="missing">Insert here: screenshot of Stripe Dashboard → Product catalog, showing the 12 products and prices.<br>(Only visible to the account holder.)</div></figure>
+</section>
+
+<section id="s4">
+  <h2><span class="n">04</span>Repeat purchases and memberships</h2>
+  <h3>Side Hustle Sprints are designed to be bought more than once</h3>
+  <p>A sprint is a fixed period — 7, 30, or 90 days — with one goal and a daily check-in in the member app. Each purchase adds <strong>one</strong> sprint credit to the customer's account; the credit is used when the customer starts the sprint. When a sprint ends, customers who want to keep going buy another one. Several sprint purchases from the same customer are therefore normal, expected activity.</p>
+  <ul>
+    <li>Credits are counted on our server from the paid Stripe purchases; a sprint cannot be started without one.</li>
+    <li>A refunded sprint that has not been started is removed from the account automatically.</li>
+    <li>Sprints are not included in the Library or memberships, so customers only pay for the sprints they actually run.</li>
+  </ul>
+  <div class="grid2">
+    <figure class="shot-sm"><img src="shots/sprints.png" alt="Sprints sales page"><figcaption>Sprints sales page — /sprints.html</figcaption></figure>
+    <figure class="shot-sm"><img src="shots/sprints-app.png" alt="Sprint in progress"><figcaption>Member app: a sprint in progress with daily check-ins</figcaption></figure>
+  </div>
+  <h3>Monthly memberships</h3>
+  <p>Infoelev Tools ($9/month) and Infoelev All Access ($19/month) renew monthly until canceled. This is stated on the pricing cards, in our Terms, and on the Stripe Checkout page. There are no free trials and no automatic upgrades.</p>
+</section>
+
+<section id="s5">
+  <h2><span class="n">05</span>Purchase and delivery flow</h2>
+  <ol class="steps">
+    <li><strong>Checkout.</strong> "Buy" or "Subscribe" opens Stripe Checkout for that exact product, created by our server. The checkout states that access is emailed right after payment and that the purchase is subject to our Terms and Refund Policy; memberships also state that they renew monthly until canceled.</li>
+    <li><strong>Confirmation page.</strong> After payment, the customer lands on a page that verifies the payment with Stripe and explains the next steps.</li>
+    <li><strong>Access email.</strong> A signed Stripe webhook creates the member account and emails the login, a generated password, and a link to the refund policy. Returning customers receive a "product added to your account" email instead.</li>
+    <li><strong>Member area.</strong> The customer logs in, sees their products, sprints, and purchase history, and can change or reset their password.</li>
+  </ol>
+  <figure class="flow-diagram">
+    <svg viewBox="0 0 720 196" xmlns="http://www.w3.org/2000/svg" font-family="Inter, Arial, sans-serif">
+      <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0f8a5f"/></marker></defs>
+      <g font-size="11" text-anchor="middle">
+        <rect x="4" y="18" width="124" height="70" rx="10" fill="#111816"/>
+        <text x="66" y="46" fill="#c9ecdc" font-weight="800" font-size="10" letter-spacing="1">STEP 1</text>
+        <text x="66" y="66" fill="#fff" font-weight="700">Stripe Checkout</text>
+        <rect x="152" y="18" width="124" height="70" rx="10" fill="#fff" stroke="#0f8a5f"/>
+        <text x="214" y="46" fill="#0f8a5f" font-weight="800" font-size="10" letter-spacing="1">STEP 2</text>
+        <text x="214" y="66" fill="#111816" font-weight="700">Signed webhook</text>
+        <rect x="300" y="18" width="124" height="70" rx="10" fill="#fff" stroke="#0f8a5f"/>
+        <text x="362" y="46" fill="#0f8a5f" font-weight="800" font-size="10" letter-spacing="1">STEP 3</text>
+        <text x="362" y="66" fill="#111816" font-weight="700">Account created</text>
+        <rect x="448" y="18" width="124" height="70" rx="10" fill="#fff" stroke="#0f8a5f"/>
+        <text x="510" y="46" fill="#0f8a5f" font-weight="800" font-size="10" letter-spacing="1">STEP 4</text>
+        <text x="510" y="66" fill="#111816" font-weight="700">Access email</text>
+        <rect x="596" y="18" width="120" height="70" rx="10" fill="#c9ecdc"/>
+        <text x="656" y="46" fill="#0b5a3e" font-weight="800" font-size="10" letter-spacing="1">STEP 5</text>
+        <text x="656" y="66" fill="#111816" font-weight="700">Member area</text>
+      </g>
+      <g stroke="#0f8a5f" stroke-width="2" marker-end="url(#arr)">
+        <line x1="130" y1="53" x2="150" y2="53"/><line x1="278" y1="53" x2="298" y2="53"/><line x1="426" y1="53" x2="446" y2="53"/><line x1="574" y1="53" x2="594" y2="53"/>
+      </g>
+      <g font-size="9.5" fill="#6b7a74" text-anchor="middle">
+        <text x="66" y="106">Card payment, USD</text>
+        <text x="214" y="106">Signature verified,</text><text x="214" y="119">processed once</text>
+        <text x="362" y="106">Access or sprint</text><text x="362" y="119">credit granted</text>
+        <text x="510" y="106">Login + generated</text><text x="510" y="119">password</text>
+        <text x="656" y="106">Server-side</text><text x="656" y="119">access control</text>
+      </g>
+      <rect x="152" y="146" width="420" height="40" rx="10" fill="#f3f6f4" stroke="#d5e2db" stroke-dasharray="4 3"/>
+      <text x="362" y="170" font-size="10.5" fill="#111816" text-anchor="middle"><tspan font-weight="700">Refund or canceled membership</tspan> → access removed automatically</text>
+      <path d="M214 132 L214 146" stroke="#d5e2db" stroke-width="1.5"/>
+    </svg>
+    <figcaption>End-to-end flow. Every step runs automatically; support can also help manually at any point.</figcaption>
+  </figure>
+  <div class="callout"><strong>What the customer reads at checkout:</strong> "Instant digital access: your login is emailed right after payment. By purchasing you agree to our Terms of Use and Refund Policy at infoelev.com." Memberships add: "Renews monthly until you cancel."</div>
+  <div class="grid2 email-grid">
+    <figure><img src="shots/email.png" alt="Access email"><figcaption>Access email sent right after payment (template shown with sample data)</figcaption></figure>
+    <div>
+      <figure class="shot-sm"><img src="shots/welcome.png" alt="Confirmation page"><figcaption>Confirmation page after payment — /welcome.html</figcaption></figure>
+      <figure class="shot-sm"><img src="shots/login.png" alt="Login page"><figcaption>Member login — /login.html</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="n">06</span>Member area and access control</h2>
+  <p>Access is checked on our server before any product page or course content is served. Customers only see what they bought; Infoelev Tools members get the tools but not the course chapters. Refunds and membership cancellations remove the corresponding access automatically.</p>
+  <div class="grid2">
+    <figure class="shot-sm"><img src="shots/account.png" alt="Account page"><figcaption>Customer account: products, sprints, purchase history, password</figcaption></figure>
+    <figure class="shot-sm"><img src="shots/app.png" alt="Course app"><figcaption>Course app: chapters, saved progress, and tools</figcaption></figure>
+  </div>
+  <figure class="shot-sm"><img src="shots/app-tools.png" alt="Tool view"><figcaption>Interactive tool inside a course app — The Flip Playbook's Flip Profit Calculator</figcaption></figure>
+</section>
+
+<section id="s7">
+  <h2><span class="n">07</span>Internal admin panel</h2>
+  <p>Our admin panel lists every member account with what it can access and how that access was granted (Stripe purchase, or manual, such as the review account created for your team), each purchase's status (active, refunded, canceled), the account creation date, last login, and number of logins. It is restricted to Infoelev administrators.</p>
+  <figure><img src="shots/admin.png" alt="Admin panel"><figcaption>Admin panel — /admin.html</figcaption></figure>
+  <div class="callout"><strong>Note on the screenshots.</strong> Because we have not processed customer payments yet, the member-area and admin screenshots show internal test accounts (example.com addresses), labeled as test accounts in the panel. They show exactly the screens customers and our team use.</div>
+</section>
+
+<section id="s8">
+  <h2><span class="n">08</span>Support, refunds and cancellations</h2>
+  <table>
+    <tr><th style="width:1.7in">Policy</th><th>How it works</th></tr>
+    <tr><td><strong>Support</strong></td><td>Email <a href="mailto:support@infoelev.com">support@infoelev.com</a>, listed in every page footer and every customer email, plus the <a href="https://infoelev.com/contact.html">contact page</a>. We aim to reply within 1–2 business days.</td></tr>
+    <tr><td><strong>Refunds</strong></td><td>Full refund within 7 calendar days of any one-time purchase (courses, Library, and sprints), no detailed explanation required. For memberships, the guarantee covers the first payment. Access is removed when the refund is processed. <a href="https://infoelev.com/refund.html">Refund Policy</a></td></tr>
+    <tr><td><strong>Cancellations</strong></td><td>Memberships can be canceled anytime. Access continues until the end of the period already paid; renewals stop immediately.</td></tr>
+    <tr><td><strong>Lost access</strong></td><td>Self-service password reset by email, plus manual help through support.</td></tr>
+  </table>
+  <p>Our approach is to prevent disputes rather than fight them: clear product descriptions before purchase, instant delivery, an easy refund path, and a support contact in every email.</p>
+
+  <h2 id="s9" style="margin-top:22px"><span class="n">09</span>Notes for the reviewer</h2>
+  <ul>
+    <li><strong>Educational content only.</strong> Every sales page, our Terms, and the checkout state that the products are educational, are not financial, tax, investment, or legal advice, and guarantee no income or financial outcome. No income screenshots or earnings claims are used.</li>
+    <li><strong>Extra-income topics.</strong> The courses teach how to evaluate and start legitimate side work — freelancing, online gigs, reselling used items, and creating digital products — using the customer's own skills and time. None of them is a business opportunity, MLM, resale-rights, or "done-for-you" income scheme.</li>
+    <li><strong>Repeat sprint purchases.</strong> Multiple purchases of Side Hustle Sprints by the same customer are the intended use (see section 04).</li>
+    <li><strong>Memberships.</strong> Monthly pricing and "cancel anytime" are shown on the pricing cards and at checkout; renewal terms are in our Terms of Use.</li>
+    <li><strong>No high-risk features.</strong> No free trials that convert silently, no pre-orders, no physical shipping, no third-party or white-label products.</li>
+    <li><strong>Related business.</strong> The same management operates ElevPay LLC, a separate company selling personal-finance education with its own website, customers, bank account, and Stripe account.</li>
+  </ul>
+
+  <h2 id="s10" style="margin-top:22px"><span class="n">10</span>Reviewer access</h2>
+  <p>A member account with access to every course, tool, and sprint has been created for your team, so you can see exactly what a paying customer receives:</p>
+  <table>
+    <tr><td style="width:1.7in"><strong>Login page</strong></td><td><a href="https://infoelev.com/login.html">https://infoelev.com/login.html</a></td></tr>
+    <tr><td><strong>Email</strong></td><td>stripe-review@infoelev.com</td></tr>
+    <tr><td><strong>Password</strong></td><td>[REVIEWER PASSWORD]</td></tr>
+  </table>
+  <p class="muted">We are happy to provide any further information or documentation. Contact: <a href="mailto:support@infoelev.com">support@infoelev.com</a>.</p>
+</section>
+
+<script>
+  document.getElementById("prepared-date").textContent = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  // Missing screenshots render as labeled placeholders so drafts stay readable.
+  document.querySelectorAll("figure img").forEach((img) => {
+    img.addEventListener("error", () => {
+      const box = document.createElement("div");
+      box.className = "missing";
+      box.textContent = "Screenshot pending: " + img.alt;
+      img.replaceWith(box);
+    });
+  });
+</script>
+</body>
+</html>
