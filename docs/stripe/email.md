@@ -68,10 +68,6 @@ So you can see exactly what a paying customer receives, we created a member acco
 - Email: stripe-review@infoelev.com
 - Password: [REVIEWER PASSWORD]
 
-**Related business**
-
-For full transparency: the same management also operates ElevPay LLC, a separate company that sells personal-finance education products and has its own Stripe account. The two companies have separate websites, products, customers, and bank accounts.
-
 **Current status**
 
 This is a new operation and we have not processed customer payments yet. The attached dossier documents the website, the sales pages, the checkout and delivery flow, the member area, and our admin panel as they work today, instead of historical sales data.
