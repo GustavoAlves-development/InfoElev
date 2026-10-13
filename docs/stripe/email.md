@@ -11,7 +11,7 @@ Hello Stripe Risk and Compliance team,
 
 I hope this message finds you well.
 
-I am reaching out on behalf of Infoelev Digital Business LLC, which recently opened Stripe account [ACCOUNT ID]. Before we begin accepting customer payments, I would like to ask your team to review the account, the products we have set up, and the way our business operates. We intend to use Stripe as our main payment provider, so it is important to us that everything is in line with Stripe's policies and risk requirements from the very beginning.
+My name is [YOUR NAME], and I am the owner of Infoelev Digital Business LLC, which recently opened Stripe account [ACCOUNT ID]. Before we begin accepting customer payments, I would like to ask your team to review the account, the products we have set up, and the way our business operates. We intend to use Stripe as our main payment provider, so it is important to us that everything is in line with Stripe's policies and risk requirements from the very beginning.
 
 **About the company**
 
@@ -19,7 +19,7 @@ I am reaching out on behalf of Infoelev Digital Business LLC, which recently ope
 - EIN: [EIN]
 - Principal office: 8200 NW 41st Street, 2nd Floor, Doral, FL 33166, United States
 - Website: https://infoelev.com
-- Support: support@infoelev.com
+- Support: infoelevdigitalbusinessllc@gmail.com · +1 (307) 394-5064
 
 **What we do**
 
@@ -81,6 +81,6 @@ Thank you very much for your time.
 Kind regards,
 
 [YOUR NAME]
-Infoelev Digital Business LLC
-support@infoelev.com
+Owner, Infoelev Digital Business LLC
+infoelevdigitalbusinessllc@gmail.com · +1 (307) 394-5064
 https://infoelev.com

@@ -90,6 +90,8 @@ async function captureShots(jobs) {
 }
 
 if (process.argv.includes("--shots")) {
+  const up = await fetch(SITE + "/").then((r) => r.ok).catch(() => false);
+  if (!up) throw new Error(SITE + " is not responding; start the site before capturing screenshots");
   mkdirSync(shotsDir, { recursive: true });
   const pub = { home: "/", "product-page": "/side-income-launchpad.html", pricing: "/library.html#pricing", sprints: "/sprints.html", login: "/login.html", welcome: "/welcome.html" };
   const jobs = Object.entries(pub).map(([name, route]) => ({ name, route }));

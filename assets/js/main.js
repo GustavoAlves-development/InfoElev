@@ -51,13 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Contact form (no backend wired up yet)
   const contactForm = document.querySelector("#contact-form");
   if (contactForm) {
+    // No backend for this form: it opens the visitor's email app addressed to support, with everything filled in.
     contactForm.addEventListener("submit", (event) => {
       event.preventDefault();
-      const note = document.querySelector("#contact-form-note");
-      if (note) {
-        note.textContent =
-          "Thanks! Our contact channel is being finalized — please reach out directly once our support email is published on this page.";
-      }
+      const value = (id) => (document.getElementById(id)?.value || "").trim();
+      const topic = document.getElementById("subject");
+      const subject = "[" + (topic?.selectedOptions[0]?.textContent || "Contact") + "] " + value("firstName") + " " + value("lastName");
+      const body = value("message") + "\n\n—\n" + value("firstName") + " " + value("lastName") + "\n" + value("email");
+      window.location.href = "mailto:infoelevdigitalbusinessllc@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
     });
   }
 });
