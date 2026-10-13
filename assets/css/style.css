@@ -595,6 +595,8 @@ img, svg { display: block; max-width: 100%; }
 }
 
 .bento-card--featured .bento-copy { flex: 1.2; }
+.bento-card--wide { grid-column: span 6; flex-direction: row; align-items: center; gap: 48px; }
+.bento-card--wide .bento-copy { flex: 1.2; }
 .bento-card--featured h3, .bento-card--featured p { color: var(--text-on-ink); }
 .bento-card--featured p { color: var(--text-on-ink-muted); }
 .bento-card--featured .product-tag { background: var(--accent); color: var(--ink); }
@@ -1316,7 +1318,7 @@ textarea.form-control { resize: vertical; min-height: 140px; }
   .menu-toggle { display: flex; }
   .section { padding: 88px 0; }
   .bento-card, .bento-card--featured { grid-column: span 6; }
-  .bento-card--featured { flex-direction: column; }
+  .bento-card--featured, .bento-card--wide { flex-direction: column; }
   .principles-grid { grid-template-columns: 1fr; }
   .feature-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 36px; }

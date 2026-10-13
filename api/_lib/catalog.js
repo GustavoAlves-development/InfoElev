@@ -8,6 +8,7 @@ export const APPS = {
   "freelance-starter-kit": "The Freelance Starter Kit",
   "online-gig-playbook": "Online Gig Playbook",
   "side-hustle-ledger": "The Side Hustle Ledger",
+  "flip-playbook": "The Flip Playbook",
 };
 
 const ALL = Object.keys(APPS);
@@ -19,6 +20,7 @@ export const PRODUCTS = {
   infoelev_freelance_kit_starter: { name: "The Freelance Starter Kit — Starter", grants: { "freelance-starter-kit": "full" } },
   infoelev_freelance_kit_complete: { name: "The Freelance Starter Kit — Complete", grants: { "freelance-starter-kit": "full" } },
   infoelev_online_gig_playbook: { name: "Online Gig Playbook", grants: { "online-gig-playbook": "full" } },
+  infoelev_flip_playbook: { name: "The Flip Playbook", grants: { "flip-playbook": "full" } },
   infoelev_full_library: { name: "The Full Infoelev Library", grants: every("full") },
   infoelev_tools: { name: "Infoelev Tools", grants: every("tools"), monthly: true },
   infoelev_all_access: { name: "Infoelev All Access", grants: every("full"), monthly: true },
