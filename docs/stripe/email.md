@@ -34,9 +34,10 @@ Each product has its own sales page, and every purchase goes through Stripe Chec
 | The Freelance Starter Kit | Course, 5 modules + Rate Calculator | $12 Starter / $22 Complete | https://infoelev.com/freelance-starter-kit.html |
 | Online Gig Playbook | Course, 5 modules + Earnings Tracker | $17 one-time | https://infoelev.com/online-gig-playbook.html |
 | The Flip Playbook | Course, 5 modules + Profit Calculator | $19 one-time | https://infoelev.com/flip-playbook.html |
-| Full Infoelev Library | All six programs, lifetime access | $90 one-time | https://infoelev.com/library.html |
+| The Online Tutoring Playbook | Course, 5 modules + Income Planner | $27 one-time | https://infoelev.com/tutoring-playbook.html |
+| Full Infoelev Library | All seven programs, lifetime access | $90 one-time | https://infoelev.com/library.html |
 | Side Hustle Sprints | 7 / 30 / 90-day goal tracker | $6 / $15 / $28 per sprint | https://infoelev.com/sprints.html |
-| Infoelev Tools | All six interactive tools | $9 / month | https://infoelev.com/library.html#pricing |
+| Infoelev Tools | All seven interactive tools | $9 / month | https://infoelev.com/library.html#pricing |
 | Infoelev All Access | All courses and tools | $19 / month | https://infoelev.com/library.html#pricing |
 
 Two points we would like to make clear upfront:

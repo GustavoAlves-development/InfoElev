@@ -6,7 +6,7 @@ import { existsSync, mkdirSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import path from "node:path";
 
-const KEYS = ["launchpad", "gigs", "hustle", "academy", "freelance", "flip", "sprint7", "sprint30", "sprint90", "library", "tools", "allaccess"];
+const KEYS = ["launchpad", "gigs", "hustle", "academy", "freelance", "flip", "tutoring", "sprint7", "sprint30", "sprint90", "library", "tools", "allaccess"];
 
 const BROWSERS = [
   "C:/Program Files/Google/Chrome/Application/chrome.exe",

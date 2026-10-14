@@ -44,6 +44,10 @@ const CATALOG = [
     description: "A practical guide to reselling online: sourcing underpriced items, checking sold prices, listing, shipping and calculating real profit. Includes 5 modules, the sourcing checklist, the listing formula, the Flip Profit Calculator tool and email support. One-time payment, lifetime access.",
   },
   {
+    id: "infoelev_tutoring_playbook", name: "The Online Tutoring Playbook", amount: 2700, cover: "tutoring",
+    description: "A step-by-step guide to earning extra income by teaching online: choosing a subject and format, pricing sessions, finding first students and running sessions they come back for. Includes 5 modules, the subject finder, a session template, the Tutoring Income Planner tool and email support. One-time payment, lifetime access.",
+  },
+  {
     id: "infoelev_sprint_7", name: "7-Day Side Hustle Sprint", amount: 600, cover: "sprint7",
     description: "A 7-day Side Hustle Sprint: one goal, a daily focus prompt and a daily check-in in the Infoelev member app, with a progress and earnings summary. Each purchase adds one sprint to your account, to start whenever you choose. One-time payment per sprint.",
   },
@@ -57,15 +61,15 @@ const CATALOG = [
   },
   {
     id: "infoelev_full_library", name: "The Full Infoelev Library", amount: 9000, cover: "library",
-    description: "All six Infoelev programs at their complete level: Side Income Launchpad, Online Gig Playbook, The Side Hustle Ledger, Digital Product Academy, The Freelance Starter Kit and The Flip Playbook, plus email support. One-time payment, lifetime access.",
+    description: "All seven Infoelev programs at their complete level: Side Income Launchpad, Online Gig Playbook, The Side Hustle Ledger, Digital Product Academy, The Freelance Starter Kit, The Flip Playbook and The Online Tutoring Playbook, plus email support. One-time payment, lifetime access.",
   },
   {
     id: "infoelev_tools", name: "Infoelev Tools", amount: 900, monthly: true, cover: "tools",
-    description: "Monthly access to all six Infoelev interactive tools: Idea Scorecard, Product Revenue Planner, Freelance Rate Calculator, Gig Earnings Tracker, Side Hustle Ledger and Flip Profit Calculator. Courses not included. Renews monthly, cancel anytime.",
+    description: "Monthly access to all seven Infoelev interactive tools: Idea Scorecard, Product Revenue Planner, Freelance Rate Calculator, Gig Earnings Tracker, Side Hustle Ledger, Flip Profit Calculator and Tutoring Income Planner. Courses not included. Renews monthly, cancel anytime.",
   },
   {
     id: "infoelev_all_access", name: "Infoelev All Access", amount: 1900, monthly: true, cover: "allaccess",
-    description: "Monthly access to everything Infoelev: all six full courses with their Action Roadmaps, all six interactive tools, every new product as it is released, and email support. Renews monthly, cancel anytime.",
+    description: "Monthly access to everything Infoelev: all seven full courses with their Action Roadmaps, all seven interactive tools, every new product as it is released, and email support. Renews monthly, cancel anytime.",
   },
 ];
 

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>The Online Tutoring Playbook — App | Infoelev</title>
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="app-sidebar">
+    <div class="logo">Info<span>elev</span></div>
+    <div class="product-name">The Online Tutoring Playbook</div>
+    <div class="app-progress-wrap">
+      <div class="app-progress-label" id="app-progress-label"><span>0 of 0 read</span><span>0%</span></div>
+      <div class="app-progress-track"><div class="app-progress-fill" id="app-progress-fill" style="width:0%"></div></div>
+    </div>
+    <nav id="app-sidebar-nav"></nav>
+    <div class="app-sidebar-footer">
+      <a href="/tutoring-playbook.html">&larr; Back to product page</a>
+      <a href="/account.html">My account</a>
+      <a href="#" data-logout>Log out</a>
+    </div>
+  </aside>
+  <main class="app-main" id="app-main-content"></main>
+</div>
+
+<script src="/assets/js/app-shell.js"></script>
+<script src="/app/content/tutoring-playbook.js"></script>
+<script>
+  const CHAPTERS = window.ELEV_CHAPTERS || [];
+
+  function renderContentSection(container, ch) {
+    container.innerHTML =
+      '<div class="app-eyebrow">' + ch.module + '</div>' +
+      '<h1 class="app-title">' + ch.heading + '</h1>' +
+      '<p class="app-dek">' + ch.dek + '</p>' +
+      '<div class="app-rule"></div>' +
+      '<div class="app-body">' + renderBlocks(ch.body) + '</div>';
+  }
+
+  const TOOL = {
+      storeKey: "tutoring",
+      title: "Tutoring Income Planner",
+      dek: "Add each kind of session you offer with its rate and how many you expect per week. Set the platform fee to see your monthly income.",
+      addLabel: "+ Add session type",
+      fields: [{ key: "fee", label: "Platform + payment fees (%)", value: 0 }],
+      defaults: [{ type: "One-on-one session" }],
+      columns: [
+        { key: "type", label: "Session type", type: "text", placeholder: "e.g. 1h English lesson" },
+        { key: "rate", label: "Rate", type: "number", placeholder: "0.00" },
+        { key: "perWeek", label: "Sessions / week", type: "number", placeholder: "0" }
+      ],
+      summary(rows, f) {
+        const weekly = rows.reduce((s, r) => s + num(r.rate) * num(r.perWeek), 0);
+        const monthly = weekly * 52 / 12 * (1 - num(f.fee) / 100);
+        const sessions = rows.reduce((s, r) => s + num(r.perWeek), 0);
+        return { className: "balanced", html: "<span>" + sessions + " sessions / week</span><span>" + formatCurrency(monthly) + "/month after fees</span>" };
+      }
+    };
+
+  const ROADMAP_ITEMS = buildRoadmapItems(CHAPTERS);
+
+  const sections = CHAPTERS.map((ch) => ({ id: ch.id, group: "content", label: ch.label, render: (c) => renderContentSection(c, ch) }));
+  sections.push({ id: "tool-tutoring", group: "tools", label: "Tutoring Income Planner", render: (c, store) => renderTableTool(c, store, TOOL) });
+  if (CHAPTERS.length) sections.push({ id: "tool-roadmap", group: "tools", label: "Action Roadmap", render: (c, store) => renderRoadmap(c, store, ROADMAP_ITEMS) });
+
+  initAppShell({ productId: "tutoring-playbook", sections: sections, locked: !CHAPTERS.length });
+</script>
+</body>
+</html>

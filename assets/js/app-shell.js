@@ -186,7 +186,7 @@ function renderLockedCourse(container) {
     '<h1 class="app-title">Course chapters</h1>' +
     '<p class="app-dek">Your Infoelev Tools plan includes every interactive tool. The full course chapters and Action Roadmaps are part of All Access.</p>' +
     '<div class="app-rule"></div>' +
-    '<div class="tool-card"><p style="margin:0 0 18px">Upgrade to Infoelev All Access for all six courses, every tool, and new products as they are released.</p>' +
+    '<div class="tool-card"><p style="margin:0 0 18px">Upgrade to Infoelev All Access for all seven courses, every tool, and new products as they are released.</p>' +
     '<a class="btn btn-primary" href="/api/checkout?product=infoelev_all_access">Upgrade to All Access — $19/month</a></div>';
 }
 
