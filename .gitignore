@@ -9,3 +9,6 @@ node_modules/
 skills-lock.json
 docs/stripe/.chrome-profile/
 docs/stripe/.*.html
+
+.vercel
+.env*
