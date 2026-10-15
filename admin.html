@@ -56,6 +56,16 @@
     <div class="admin-toolbar">
       <input class="form-control" type="search" id="admin-search" placeholder="Search by email or product">
     </div>
+    <div class="auth-card admin-card" style="margin-bottom:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+        <h3 style="margin:0;">Stripe sales &amp; invoices</h3>
+        <button class="btn btn-primary" id="load-sales" type="button">Load sales from Stripe</button>
+      </div>
+      <table class="data-table" id="sales-table">
+        <thead><tr><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th></th></tr></thead>
+        <tbody><tr><td colspan="5" class="muted">Click “Load sales from Stripe”.</td></tr></tbody>
+      </table>
+    </div>
     <div class="auth-card admin-card">
       <table class="data-table" id="admin-table">
         <thead><tr><th>Member</th><th>Access</th><th>Purchases</th><th>Created</th><th>Last login</th><th>Logins</th></tr></thead>
@@ -134,6 +144,16 @@
     render();
   }).catch(() => { location.href = "/login.html?next=/admin.html"; });
   document.getElementById("admin-search").addEventListener("input", render);
+  document.getElementById("load-sales").addEventListener("click", async () => {
+    const body = document.querySelector("#sales-table tbody");
+    body.innerHTML = '<tr><td colspan="5" class="muted">Loading…</td></tr>';
+    try {
+      const { sales } = await ElevMember.api("/api/admin/sales");
+      body.innerHTML = sales.length ? sales.map((s) => "<tr><td>" + ElevMember.date(s.date, true) + (s.livemode ? "" : ' <span class="pill pill-manual">test</span>') + "</td><td><strong>" + ElevMember.esc(s.name || "—") + '</strong><div class="muted">' + ElevMember.esc(s.email || "") + "</div></td><td>" + ElevMember.esc(s.items) + "</td><td>" + money(s).slice(3) + '</td><td><a class="btn btn-primary" target="_blank" href="/api/admin/invoice?id=' + encodeURIComponent(s.id) + '">Invoice</a></td></tr>').join("") : '<tr><td colspan="5" class="muted">No paid sales in Stripe yet.</td></tr>';
+    } catch (err) {
+      body.innerHTML = '<tr><td colspan="5" class="muted">Could not load sales: ' + ElevMember.esc(err.message) + "</td></tr>";
+    }
+  });
 </script>
 </body>
 </html>
