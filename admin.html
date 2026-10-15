@@ -149,7 +149,7 @@
     body.innerHTML = '<tr><td colspan="5" class="muted">Loading…</td></tr>';
     try {
       const { sales } = await ElevMember.api("/api/admin/sales");
-      body.innerHTML = sales.length ? sales.map((s) => "<tr><td>" + ElevMember.date(s.date, true) + (s.livemode ? "" : ' <span class="pill pill-manual">test</span>') + "</td><td><strong>" + ElevMember.esc(s.name || "—") + '</strong><div class="muted">' + ElevMember.esc(s.email || "") + "</div></td><td>" + ElevMember.esc(s.items) + "</td><td>" + money(s).slice(3) + '</td><td><a class="btn btn-primary" target="_blank" href="/api/admin/invoice?id=' + encodeURIComponent(s.id) + '">Invoice</a></td></tr>').join("") : '<tr><td colspan="5" class="muted">No paid sales in Stripe yet.</td></tr>';
+      body.innerHTML = sales.length ? sales.map((s) => "<tr><td>" + ElevMember.date(s.date, true) + (s.livemode ? "" : ' <span class="pill pill-manual">test</span>') + "</td><td><strong>" + ElevMember.esc(s.name || "—") + '</strong><div class="muted">' + ElevMember.esc(s.email || "") + "</div></td><td>" + ElevMember.esc(s.items) + "</td><td>" + money(s).slice(3) + (s.refunded ? ' <span class="pill pill-canceled">' + (s.refunded >= s.amount ? "refunded" : "part. refunded") + "</span>" : "") + '</td><td><a class="btn btn-primary" target="_blank" href="/api/admin/invoice?id=' + encodeURIComponent(s.id) + '">Invoice</a></td></tr>').join("") : '<tr><td colspan="5" class="muted">No sales in Stripe yet.</td></tr>';
     } catch (err) {
       body.innerHTML = '<tr><td colspan="5" class="muted">Could not load sales: ' + ElevMember.esc(err.message) + "</td></tr>";
     }

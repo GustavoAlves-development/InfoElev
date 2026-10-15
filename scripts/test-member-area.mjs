@@ -221,33 +221,41 @@ test("sprints: each purchase is one credit, used up when a sprint starts", async
   assert.equal((await sprints.GET(req("/api/sprints"))).status, 401);
 });
 
-test("admin sales list and invoice come from Stripe", async () => {
+test("admin sales list and invoice come from Stripe, refunds included", async () => {
   process.env.STRIPE_SECRET_KEY = "sk_test_x";
   process.env.ADMIN_EMAILS += ",boss@elevpay.test";
   const sales = await import("../api/admin/sales.js");
   const invoice = await import("../api/admin/invoice.js");
+  const charge = {
+    id: "ch_3abc12345XYZ", created: 1760500000, status: "succeeded", livemode: true, currency: "usd", amount: 2900, amount_refunded: 2900,
+    payment_intent: "pi_123", description: null, billing_details: { name: "Jane <Doe>", email: "jane@example.com", address: { country: "US", postal_code: "10001" } },
+    payment_method_details: { card: { brand: "visa", last4: "4242" } },
+    refunds: { data: [{ id: "re_1", status: "succeeded", amount: 2900, created: 1760600000 }] },
+  };
   const session = {
-    id: "cs_live_abc12345XYZ", created: 1760500000, payment_status: "paid", status: "complete", livemode: true,
-    currency: "usd", amount_subtotal: 2900, amount_total: 2900, total_details: { amount_discount: 0, amount_tax: 0 },
-    payment_intent: "pi_123", customer_details: { name: "Jane <Doe>", email: "jane@example.com", address: { country: "US", postal_code: "10001" } },
+    id: "cs_live_1", amount_subtotal: 2900, total_details: { amount_discount: 0, amount_tax: 0 }, customer_details: {},
     line_items: { data: [{ description: "Side Income Launchpad", quantity: 1, amount_subtotal: 2900, price: { unit_amount: 2900, recurring: null } }] },
   };
   const realFetch = globalThis.fetch;
-  globalThis.fetch = async (url, opts) => String(url).startsWith("https://api.stripe.com/")
-    ? new Response(JSON.stringify(String(url).includes("/checkout/sessions?") ? { data: [session, { ...session, id: "cs_live_unpaid", payment_status: "unpaid" }] } : session))
-    : realFetch(url, opts);
+  globalThis.fetch = async (url, opts) => {
+    const u = String(url);
+    if (!u.startsWith("https://api.stripe.com/")) return realFetch(url, opts);
+    if (u.includes("/checkout/sessions?")) return new Response(JSON.stringify({ data: [session] }));
+    if (u.includes("/charges?")) return new Response(JSON.stringify({ data: [charge, { ...charge, id: "ch_failed", status: "failed" }] }));
+    return new Response(JSON.stringify(charge));
+  };
   try {
-    const { password: ownerPw } = await grantPurchase("boss@elevpay.test", { id: "manual:boss", product: "infoelev_all_access", source: "manual" }, { sendMail: false });
-    const owner = (await logIn("boss@elevpay.test", ownerPw)).cookie;
+    const { password: bossPw } = await grantPurchase("boss@elevpay.test", { id: "manual:boss", product: "infoelev_all_access", source: "manual" }, { sendMail: false });
+    const boss = (await logIn("boss@elevpay.test", bossPw)).cookie;
     assert.equal((await sales.GET(req("/api/admin/sales"))).status, 404);
-    const list = await (await sales.GET(req("/api/admin/sales", { cookie: owner }))).json();
-    assert.deepEqual(list.sales.map((s) => [s.id, s.name, s.items, s.amount]), [["cs_live_abc12345XYZ", "Jane <Doe>", "Side Income Launchpad", 2900]]);
+    const list = await (await sales.GET(req("/api/admin/sales", { cookie: boss }))).json();
+    assert.deepEqual(list.sales.map((s) => [s.id, s.name, s.items, s.amount, s.refunded]), [["ch_3abc12345XYZ", "Jane <Doe>", "Side Income Launchpad", 2900, 2900]]);
 
-    assert.equal((await invoice.GET(req("/api/admin/invoice?id=cs_live_abc12345XYZ"))).status, 404);
-    assert.equal((await invoice.GET(req("/api/admin/invoice?id=bad", { cookie: owner }))).status, 400);
-    const page = await (await invoice.GET(req("/api/admin/invoice?id=cs_live_abc12345XYZ", { cookie: owner }))).text();
-    for (const s of ["INV-20251015-12345XYZ", "Jane &lt;Doe&gt;", "jane@example.com", "Side Income Launchpad", "$29.00", "98-1979147", "pi_123"]) assert.ok(page.includes(s), s);
-    assert.ok(!page.includes("Jane <Doe>"));
+    assert.equal((await invoice.GET(req("/api/admin/invoice?id=ch_3abc12345XYZ"))).status, 404);
+    assert.equal((await invoice.GET(req("/api/admin/invoice?id=bad", { cookie: boss }))).status, 400);
+    const page = await (await invoice.GET(req("/api/admin/invoice?id=ch_3abc12345XYZ", { cookie: boss }))).text();
+    for (const s of ["INV-20251015-12345XYZ", "Jane &lt;Doe&gt;", "jane@example.com", "Side Income Launchpad", "$29.00", "98-1979147", "pi_123", "REFUNDED", "re_1", "Visa ending in 4242", "Net amount", "$0.00"]) assert.ok(page.includes(s), s);
+    assert.ok(!page.includes("Jane <Doe>") && !page.includes(">PAID<"));
     if (process.env.INVOICE_OUT) (await import("node:fs")).writeFileSync(process.env.INVOICE_OUT, page);
   } finally {
     globalThis.fetch = realFetch;
