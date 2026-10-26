@@ -68,7 +68,7 @@
     </div>
     <div class="auth-card admin-card">
       <table class="data-table" id="admin-table">
-        <thead><tr><th>Member</th><th>Access</th><th>Purchases</th><th>Created</th><th>Status</th></tr></thead>
+        <thead><tr><th>Member</th><th>Access</th><th>Purchases</th><th>Status</th></tr></thead>
         <tbody><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
       </table>
     </div>
@@ -138,8 +138,8 @@
     document.querySelector("#admin-table tbody").innerHTML = rows.length ? rows.map((u) => {
       const access = Object.entries(u.access).map(([id, level]) => '<span class="pill pill-' + level + '">' + APPS[id] + (level === "tools" ? " · tools" : "") + "</span>").join(" ") || '<span class="muted">none</span>';
       const purchases = u.purchases.map((p) => '<div class="admin-purchase">' + ElevMember.esc(p.product) + (p.monthly ? " (monthly)" : "") + money(p) + ' <span class="pill pill-' + p.status + '">' + p.status + "</span>" + (p.source !== "stripe" ? ' <span class="pill pill-manual">' + ElevMember.esc(p.note || p.source) + "</span>" : "") + '<div class="muted">' + ElevMember.date(p.date) + "</div></div>").join("") || '<span class="muted">—</span>';
-      return "<tr><td><strong>" + ElevMember.esc(u.email) + "</strong>" + (u.admin ? ' <span class="pill pill-admin">admin</span>' : "") + "</td><td>" + access + "</td><td>" + purchases + "</td><td>" + ElevMember.date(u.createdAt) + "</td><td>" + (([c, label]) => '<span class="pill pill-' + c + '">' + label + "</span>")(statusOf(u)) + "</td></tr>";
-    }).join("") : '<tr><td colspan="5" class="muted">No members found.</td></tr>';
+      return "<tr><td><strong>" + ElevMember.esc(u.email) + "</strong>" + (u.admin ? ' <span class="pill pill-admin">admin</span>' : "") + "</td><td>" + access + "</td><td>" + purchases + "</td><td>" + (([c, label]) => '<span class="pill pill-' + c + '">' + label + "</span>")(statusOf(u)) + "</td></tr>";
+    }).join("") : '<tr><td colspan="4" class="muted">No members found.</td></tr>';
   }
   ElevMember.api("/api/admin/users").then((d) => {
     users = d.users;
