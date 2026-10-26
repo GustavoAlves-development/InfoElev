@@ -1282,7 +1282,7 @@ textarea.form-control { resize: vertical; min-height: 140px; }
 .pill-active, .pill-full { background: rgba(63, 122, 74, 0.13); color: #2f5f38; }
 .pill-tools { background: var(--accent-pale); color: #0b5a3e; }
 .pill-refunded, .pill-canceled { background: rgba(163, 64, 46, 0.12); color: #8a3526; }
-.pill-manual { background: rgba(17, 24, 22, 0.08); color: var(--text-muted); }
+.pill-inactive, .pill-manual { background: rgba(17, 24, 22, 0.08); color: var(--text-muted); }
 .pill-admin { background: var(--ink); color: var(--accent-pale); }
 
 .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }

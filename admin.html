@@ -68,7 +68,7 @@
     </div>
     <div class="auth-card admin-card">
       <table class="data-table" id="admin-table">
-        <thead><tr><th>Member</th><th>Access</th><th>Purchases</th><th>Created</th><th>Last login</th><th>Logins</th></tr></thead>
+        <thead><tr><th>Member</th><th>Access</th><th>Purchases</th><th>Created</th><th>Status</th></tr></thead>
         <tbody><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
       </table>
     </div>
@@ -125,22 +125,28 @@
   const APPS = { "side-income-launchpad": "Side Income Launchpad", "digital-product-academy": "Product Academy", "freelance-starter-kit": "Freelance Kit", "online-gig-playbook": "Gig Playbook", "side-hustle-ledger": "Side Hustle Ledger", "flip-playbook": "Flip Playbook", "tutoring-playbook": "Tutoring Playbook" };
   const money = (p) => p.amount == null ? "" : " · " + (p.amount / 100).toLocaleString("en-US", { style: "currency", currency: (p.currency || "usd").toUpperCase() });
   let users = [];
+  // Member status from real purchase statuses: any active purchase = active; all canceled/refunded = that; none = inactive.
+  function statusOf(u) {
+    if (!u.purchases.length) return ["inactive", "Inactive"];
+    if (u.purchases.some((p) => p.status === "active")) return ["active", "Active"];
+    if (u.purchases.some((p) => p.status === "canceled")) return ["canceled", "Subscription canceled"];
+    return ["refunded", "Refunded"];
+  }
   function render() {
     const q = document.getElementById("admin-search").value.trim().toLowerCase();
     const rows = users.filter((u) => !q || u.email.includes(q) || u.purchases.some((p) => p.product.toLowerCase().includes(q)));
     document.querySelector("#admin-table tbody").innerHTML = rows.length ? rows.map((u) => {
       const access = Object.entries(u.access).map(([id, level]) => '<span class="pill pill-' + level + '">' + APPS[id] + (level === "tools" ? " · tools" : "") + "</span>").join(" ") || '<span class="muted">none</span>';
       const purchases = u.purchases.map((p) => '<div class="admin-purchase">' + ElevMember.esc(p.product) + (p.monthly ? " (monthly)" : "") + money(p) + ' <span class="pill pill-' + p.status + '">' + p.status + "</span>" + (p.source !== "stripe" ? ' <span class="pill pill-manual">' + ElevMember.esc(p.note || p.source) + "</span>" : "") + '<div class="muted">' + ElevMember.date(p.date) + "</div></div>").join("") || '<span class="muted">—</span>';
-      return "<tr><td><strong>" + ElevMember.esc(u.email) + "</strong>" + (u.admin ? ' <span class="pill pill-admin">admin</span>' : "") + "</td><td>" + access + "</td><td>" + purchases + "</td><td>" + ElevMember.date(u.createdAt) + "</td><td>" + (u.lastLoginAt ? ElevMember.date(u.lastLoginAt, true) : '<span class="muted">never</span>') + "</td><td>" + u.loginCount + "</td></tr>";
-    }).join("") : '<tr><td colspan="6" class="muted">No members found.</td></tr>';
+      return "<tr><td><strong>" + ElevMember.esc(u.email) + "</strong>" + (u.admin ? ' <span class="pill pill-admin">admin</span>' : "") + "</td><td>" + access + "</td><td>" + purchases + "</td><td>" + ElevMember.date(u.createdAt) + "</td><td>" + (([c, label]) => '<span class="pill pill-' + c + '">' + label + "</span>")(statusOf(u)) + "</td></tr>";
+    }).join("") : '<tr><td colspan="5" class="muted">No members found.</td></tr>';
   }
   ElevMember.api("/api/admin/users").then((d) => {
     users = d.users;
     const members = users.filter((u) => !u.admin);
-    const active = members.filter((u) => Object.keys(u.access).length).length;
-    const subs = members.filter((u) => u.purchases.some((p) => p.monthly && p.status === "active")).length;
+    const count = (c) => members.filter((u) => statusOf(u)[0] === c).length;
     const stat = (n, label) => '<div class="admin-stat"><strong>' + n + "</strong><span>" + label + "</span></div>";
-    document.getElementById("admin-stats").innerHTML = stat(members.length, "Member accounts") + stat(active, "With active access") + stat(subs, "Active subscriptions") + stat(members.filter((u) => u.lastLoginAt).length, "Have logged in");
+    document.getElementById("admin-stats").innerHTML = stat(members.length, "Member accounts") + stat(count("active"), "Active") + stat(count("inactive"), "Inactive") + stat(count("canceled") + count("refunded"), "Canceled or refunded");
     render();
   }).catch(() => { location.href = "/login.html?next=/admin.html"; });
   document.getElementById("admin-search").addEventListener("input", render);
